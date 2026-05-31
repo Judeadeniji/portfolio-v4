@@ -11,9 +11,10 @@ import { getEntry } from "astro:content";
 
 const profileEntry = await getEntry("profile", "main");
 const name = profileEntry!.data.name;
+const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, ''); // Use first sentence of bio
 ---
 
-<Layout title={`${name} | Portfolio`}>
+<Layout title={`${name} | Portfolio`} description={description}>
   <ProfileHeader />
   <Contributions />
   <TechStack />

@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { cat, posts } = Astro.props;
 ---
-<Layout title={`${cat} Posts`}>
+<Layout title={`${cat} Posts | Blog`} description={`Explore all blog posts in the ${cat} category.`}>
   <div class="font-mono text-[13px] text-muted-foreground space-y-10">
     <div class="space-y-3">
       <div class="flex items-center gap-2.5 mb-8">

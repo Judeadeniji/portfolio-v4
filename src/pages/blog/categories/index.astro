@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 const posts = await getCollection("blog");
 const categories = Array.from(new Set(posts.map(p => p.data.category).filter(Boolean)));
 ---
-<Layout title="Categories">
+<Layout title="Categories | Blog" description="Browse all blog post categories.">
   <div class="font-mono text-[13px] text-muted-foreground space-y-10">
     <div class="space-y-3">
       <div class="flex items-center gap-2.5 mb-8">

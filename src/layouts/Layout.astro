@@ -5,19 +5,42 @@ import GlobalTerminal from "../components/GlobalTerminal.tsx";
 
 interface Props {
     title: string;
+    description?: string;
+    image?: string;
 }
 
-const { title } = Astro.props;
+const { 
+    title, 
+    description = "Jude Adeniji - Product Engineer building interactive web applications.",
+    image = "/og-image.png"
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content="Portfolio" />
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="canonical" href={canonicalURL} />
         <meta name="generator" content={Astro.generator} />
+        
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(image, canonicalURL)} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={new URL(image, canonicalURL)} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -29,7 +52,7 @@ const { title } = Astro.props;
     <body
         class="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased relative selection:bg-foreground selection:text-background"
     >
-        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] bg-background border border-border px-4 py-2 text-sm font-mono text-foreground font-medium rounded-md">
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-100 bg-background border border-border px-4 py-2 text-sm font-mono text-foreground font-medium rounded-md">
             Skip to content
         </a>
         

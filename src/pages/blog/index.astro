@@ -19,9 +19,11 @@ const posts = rawPosts
       featured: p.data.featured,
     }
   }));
+
+const description = `Explore articles, tutorials, and thoughts on software engineering by ${name}.`;
 ---
 
-<Layout title={`${name} | Blog`}>
+<Layout title={`${name} | Blog`} description={description}>
   <div class="space-y-8 mb-12">
     <div class="text-[10px] font-medium uppercase tracking-widest text-muted-foreground font-mono">Terminal Blog</div>
     <BlogTerminal client:load posts={posts} />
