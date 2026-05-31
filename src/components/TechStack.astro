@@ -1,0 +1,21 @@
+---
+---
+  <div class="space-y-4 mb-16 font-mono text-[13px]">
+    <div class="flex items-center gap-2.5 mb-6">
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="text-muted-foreground/50">$</span>
+      <span class="text-foreground">ls -l ./skills</span>
+    </div>
+    <div class="pl-0 sm:pl-6 text-muted-foreground grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {[
+          "TypeScript", "JavaScript", "Go", "React", "Next.js", 
+          "SolidJS", "Svelte", "Astro", "Tailwind CSS", "Express", 
+          "Bun", "Git", "Docker", "PostgreSQL", "Redis", "Figma", "VS Code"
+      ].map((tech) => (
+        <div class="flex gap-4 items-center group">
+          <span class="opacity-50 hidden sm:inline-block">-rw-r--r--</span>
+          <span class="group-hover:text-foreground transition-colors">{tech.toLowerCase().replace(/\s+/g, '-')}</span>
+        </div>
+      ))}
+    </div>
+  </div>

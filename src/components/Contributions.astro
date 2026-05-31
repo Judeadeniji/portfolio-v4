@@ -1,0 +1,154 @@
+---
+import { getContributions } from "../lib/github";
+
+const calendar = await getContributions();
+const total = calendar?.totalContributions || 0;
+const weeks = calendar?.weeks?.slice(-52) || [];
+const currentYear = new Date().getFullYear();
+
+const monthLabels: { name: string; index: number }[] = [];
+if (weeks.length > 0) {
+  weeks.forEach((week: any, index: number) => {
+    const firstDay = week.contributionDays[0];
+    if (!firstDay) return;
+    const date = new Date(firstDay.date);
+    const monthName = date
+      .toLocaleDateString("en-US", { month: "short" })
+      .toUpperCase();
+
+    if (index === 0) {
+      monthLabels.push({ name: monthName, index });
+    } else {
+      const prevDate = new Date(weeks[index - 1].contributionDays[0].date);
+      if (prevDate.getMonth() !== date.getMonth()) {
+        monthLabels.push({ name: monthName, index });
+      }
+    }
+  });
+}
+
+const formatDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+---
+
+<div class="mb-12 relative">
+  <div class="overflow-x-auto pt-4 pb-4 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-hide">
+    <div class="w-max mx-auto lg:mx-0">
+      {/* Months Row */}
+      <div class="relative w-full h-4 mb-2">
+        {
+          monthLabels.map((m) => (
+            <div
+              class="absolute text-[10px] text-muted-foreground font-mono"
+              style={`left: ${m.index * 14}px;`}
+            >
+              {m.name}
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Grid */}
+      <div class="flex gap-1">
+        {
+          weeks.length > 0
+            ? weeks.map((week: any) => (
+                <div class="flex flex-col gap-1 shrink-0">
+                  {week.contributionDays.map((day: any) => {
+                    const count = day.contributionCount;
+                    const intensity = String(day.intensity);
+                    const bgClass =
+                      intensity === "0"
+                        ? "bg-border/30"
+                        : intensity === "1"
+                          ? "bg-green-500/40"
+                          : intensity === "2"
+                            ? "bg-green-500/60"
+                            : intensity === "3"
+                              ? "bg-green-500/80"
+                              : "bg-green-500";
+
+                    const tooltipText = `${count === 0 ? "No" : count} contributions on ${formatDate(day.date)}`;
+
+                    return (
+                      <div
+                        class={`w-2.5 h-2.5 rounded-[1px] contrib-box cursor-default hover:ring-1 hover:ring-foreground/20 transition-all ${bgClass}`}
+                        data-tooltip={tooltipText}
+                      />
+                    );
+                  })}
+                </div>
+              ))
+            : Array.from({ length: 52 }).map(() => (
+                <div class="flex flex-col gap-1 shrink-0">
+                  {Array.from({ length: 7 }).map(() => (
+                    <div class="w-2.5 h-2.5 rounded-[1px] bg-border/30" />
+                  ))}
+                </div>
+              ))
+        }
+      </div>
+
+      {/* Footer Legend */}
+      <div class="flex items-center justify-between text-[10px] text-muted-foreground mt-4 uppercase tracking-widest font-mono w-full">
+        <div>
+          <span class="text-foreground font-semibold">{total}</span> CONTRIBUTIONS · {
+            currentYear - 1
+          }-{currentYear.toString().slice(2)}
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span>LESS</span>
+          <div class="w-2.5 h-2.5 rounded-[1px] bg-border/30"></div>
+          <div class="w-2.5 h-2.5 rounded-[1px] bg-green-500/40"></div>
+          <div class="w-2.5 h-2.5 rounded-[1px] bg-green-500/60"></div>
+          <div class="w-2.5 h-2.5 rounded-[1px] bg-green-500/80"></div>
+          <div class="w-2.5 h-2.5 rounded-[1px] bg-green-500"></div>
+          <span>MORE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Global Tooltip Portal */}
+<div
+  id="contrib-tooltip"
+  class="fixed opacity-0 pointer-events-none transition-opacity duration-150 bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-[11px] font-medium tracking-wide whitespace-nowrap px-3 py-1.5 rounded-md shadow-xl z-9999 -translate-x-1/2 -translate-y-full"
+>
+  <span id="contrib-tooltip-text"></span>
+  <div
+    class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-900 dark:border-t-zinc-100"
+  >
+  </div>
+</div>
+
+<script>
+  const tooltip = document.getElementById("contrib-tooltip");
+  const tooltipText = document.getElementById("contrib-tooltip-text");
+
+  if (tooltip && tooltipText) {
+    document.querySelectorAll(".contrib-box").forEach((box) => {
+      box.addEventListener("mouseenter", (e) => {
+        const target = e.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
+
+        tooltipText.innerText = target.getAttribute("data-tooltip") || "";
+
+        // Position globally relative to viewport, avoiding any clipping
+        tooltip.style.left = rect.left + rect.width / 2 + "px";
+        tooltip.style.top = rect.top - 8 + "px";
+        tooltip.style.opacity = "1";
+      });
+
+      box.addEventListener("mouseleave", () => {
+        tooltip.style.opacity = "0";
+      });
+    });
+  }
+</script>

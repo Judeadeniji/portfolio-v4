@@ -1,0 +1,22 @@
+{
+  "name": "Permi",
+  "description": "A SaaS platform for tracking contractor licenses. Led a full frontend and backend overhaul, including schema migration, license worker rewrite, and integration of Polar billing and Resend email.",
+  "technologies": [
+    "TypeScript",
+    "TanStack Start",
+    "Hono",
+    "Drizzle ORM",
+    "PostgreSQL",
+    "Redis"
+  ],
+  "features": [
+    "Org-level License Tracking",
+    "Expiration Notifications",
+    "Billing Integration",
+    "Staging Environment",
+    "Email Infrastructure"
+  ],
+  "live_url": "https://permi.app",
+  "img_url": "/images/placeholder.png",
+  "order": 1
+}

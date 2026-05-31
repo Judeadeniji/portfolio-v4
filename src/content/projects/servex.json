@@ -1,0 +1,12 @@
+{
+  "name": "Servex",
+  "description": "A high-performance HTTP server framework built from scratch in TypeScript. Inspired by Express and Fastify to deliver blazing speed and reliability.",
+  "technologies": [
+    "TypeScript",
+    "Bun",
+    "Jest"
+  ],
+  "repo": "https://github.com/Judeadeniji/servex",
+  "img_url": "/images/servex.png",
+  "order": 6
+}

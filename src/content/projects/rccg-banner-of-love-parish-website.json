@@ -1,0 +1,20 @@
+{
+  "name": "RCCG Banner of Love Parish Website",
+  "description": "Official church website featuring event management, a sermon archive, online giving, and member registration. Led full-stack development from design to deployment.",
+  "technologies": [
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "Git"
+  ],
+  "features": [
+    "Responsive Design",
+    "Event Management",
+    "Sermon Archive",
+    "Online Giving",
+    "Member Registration Form"
+  ],
+  "live_url": "https://rccgbanneroflovelagos.org",
+  "img_url": "/images/rccg-banner-of-love.png",
+  "order": 5
+}

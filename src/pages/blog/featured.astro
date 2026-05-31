@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+const featuredPosts = posts.filter(p => p.data.featured);
+---
+<Layout title="Featured Posts">
+  <div class="font-mono text-[13px] text-muted-foreground space-y-10">
+    <div class="space-y-3">
+      <div class="flex items-center gap-2.5 mb-8">
+        <span class="text-green-500 font-bold opacity-80">~</span>
+        <span class="text-muted-foreground/50">$</span>
+        <span class="text-foreground">ls -la ./featured</span>
+      </div>
+      <div class="pl-6 space-y-4">
+        {featuredPosts.map(post => (
+          <a href={`/blog/${post.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
+            <div class="flex items-center gap-2.5 shrink-0">
+              <span class="text-yellow-500/80">★</span>
+              <span class="group-hover:underline underline-offset-4 decoration-border">{post.id}.mdx</span>
+            </div>
+            <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+            <div class="opacity-60 flex items-center gap-2 shrink-0">
+              <span class="text-foreground/40">[{post.data.category}]</span>
+              <span class="truncate max-w-62.5 hidden md:inline-block"># {post.data.title}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

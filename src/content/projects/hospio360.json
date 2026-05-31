@@ -1,0 +1,13 @@
+{
+  "name": "Hospio360",
+  "description": "Leading frontend architecture for a hotel management SaaS across a Next.js marketing site and a TanStack Start operations dashboard. Responsible for UI component design and performance.",
+  "technologies": [
+    "Next.js",
+    "TanStack Start",
+    "TypeScript",
+    "Tailwind CSS",
+    "Shadcn UI"
+  ],
+  "img_url": "/images/placeholder.png",
+  "order": 2
+}

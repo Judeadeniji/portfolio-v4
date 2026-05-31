@@ -1,0 +1,85 @@
+---
+import "../styles/global.css";
+import CustomCursor from "../components/CustomCursor.astro";
+import GlobalTerminal from "../components/GlobalTerminal.tsx";
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Portfolio" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <title>{title}</title>
+    </head>
+    <body
+        class="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased relative selection:bg-foreground selection:text-background"
+    >
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] bg-background border border-border px-4 py-2 text-sm font-mono text-foreground font-medium rounded-md">
+            Skip to content
+        </a>
+        
+        <CustomCursor />
+        {/* Navbar */}
+        <nav class="fixed top-0 left-0 right-0 z-50">
+            <div
+                class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-background mask-[linear-gradient(to_bottom,black_80%,transparent)]"
+            >
+            </div>
+            <div class="relative w-full max-w-4xl mx-auto px-6 lg:px-0">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3 sm:gap-5 text-[13px] font-mono text-muted-foreground overflow-x-auto no-scrollbar py-2">
+                        <div class="items-center gap-2.5 shrink-0 hidden sm:flex">
+                          <span class="text-green-500 font-bold opacity-80">~</span>
+                          <span class="opacity-50">$</span>
+                        </div>
+                        <a
+                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
+                            href="/">cd /home</a
+                        >
+                        <a
+                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
+                            href="/blog">cd /blog</a
+                        >
+                        <a
+                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
+                            href="/#projects">./projects</a
+                        >
+                        <a
+                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
+                            href="/#experience">./experience</a
+                        >
+                        <a
+                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
+                            href="/#contact">./contact</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main
+            id="main-content"
+            class="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-0 pt-32 pb-32 grow outline-none"
+            tabindex="-1"
+        >
+            <slot />
+        </main>
+        
+        <GlobalTerminal client:load />
+    </body>
+</html>

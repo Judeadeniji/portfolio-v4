@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+const categories = Array.from(new Set(posts.map(p => p.data.category).filter(Boolean)));
+---
+<Layout title="Categories">
+  <div class="font-mono text-[13px] text-muted-foreground space-y-10">
+    <div class="space-y-3">
+      <div class="flex items-center gap-2.5 mb-8">
+        <span class="text-green-500 font-bold opacity-80">~</span>
+        <span class="text-muted-foreground/50">$</span>
+        <span class="text-foreground">ls -la ./categories</span>
+      </div>
+      <div class="pl-6 space-y-4">
+        {categories.map(cat => (
+          <a href={`/blog/categories/${cat.toLowerCase()}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
+            <div class="flex items-center gap-2.5 shrink-0">
+              <span class="text-blue-400 opacity-80">drwxr-xr-x</span>
+              <span class="group-hover:underline underline-offset-4 decoration-border">{cat.toLowerCase()}</span>
+            </div>
+            <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+            <div class="opacity-60 flex items-center gap-2 shrink-0">
+               <span>{posts.filter(p => p.data.category === cat).length} posts</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

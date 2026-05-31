@@ -1,0 +1,49 @@
+---
+// CustomCursor.astro
+---
+
+<div
+  id="custom-cursor"
+  class="fixed w-4 h-4 z-50 -mt-2 -ml-2 rounded-full bg-foreground mix-blend-difference pointer-events-none transition-transform duration-100 ease-out hidden md:block"
+  style="top: 0; left: 0;"
+>
+</div>
+
+<style is:global>
+  /* Hide default cursor only on non-touch devices where custom cursor works */
+  @media (pointer: fine) {
+    * {
+      /* cursor: none !important; */
+    }
+  }
+</style>
+
+<script>
+  const cursor = document.getElementById("custom-cursor");
+  let isClicking = false;
+
+  if (cursor && window.matchMedia("(pointer: fine)").matches) {
+    // We only want to track mouse if it's a fine pointer (mouse/trackpad, not touch)
+    window.addEventListener("mousemove", (e) => {
+      requestAnimationFrame(() => {
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(${isClicking ? 0.8 : 1})`;
+      });
+    });
+
+    window.addEventListener("mousedown", () => {
+      isClicking = true;
+      cursor.style.transform = cursor.style.transform.replace(
+        /scale\([^\)]*\)/,
+        "scale(0.8)",
+      );
+    });
+
+    window.addEventListener("mouseup", () => {
+      isClicking = false;
+      cursor.style.transform = cursor.style.transform.replace(
+        /scale\([^\)]*\)/,
+        "scale(1)",
+      );
+    });
+  }
+</script>

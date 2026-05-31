@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntry } from "astro:content";
+import BlogTerminal from "../../components/BlogTerminal.tsx";
+
+const profileEntry = await getEntry('profile', 'main');
+const name = profileEntry!.data.name;
+
+const rawPosts = await getCollection("blog");
+const posts = rawPosts
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
+  .map(p => ({
+    id: p.id,
+    data: {
+      title: p.data.title,
+      description: p.data.description,
+      date: new Date(p.data.date).toISOString(),
+      category: p.data.category,
+      featured: p.data.featured,
+    }
+  }));
+---
+
+<Layout title={`${name} | Blog`}>
+  <div class="space-y-8 mb-12">
+    <div class="text-[10px] font-medium uppercase tracking-widest text-muted-foreground font-mono">Terminal Blog</div>
+    <BlogTerminal client:load posts={posts} />
+  </div>
+</Layout>

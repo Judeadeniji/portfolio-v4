@@ -1,0 +1,12 @@
+{
+  "name": "Paystack SDK (Edge)",
+  "description": "A TypeScript Paystack SDK built for edge and serverless environments. Uses a fetch wrapper compatible with Cloudflare Workers, Deno, and Bun.",
+  "technologies": [
+    "TypeScript",
+    "Node.js",
+    "Paystack API"
+  ],
+  "repo": "https://github.com/Judeadeniji/paystack-edge",
+  "img_url": "/images/paystack-edge.png",
+  "order": 7
+}

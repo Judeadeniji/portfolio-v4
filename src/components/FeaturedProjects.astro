@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+
+// Load projects from Astro content collections
+const rawProjects = await getCollection("projects");
+const projects = rawProjects.sort((a: any, b: any) => a.data.order - b.data.order).map((p: any) => p.data);
+---
+
+<section id="projects" class="mb-16 font-mono text-[13px]">
+  <div class="flex items-center gap-2.5 mb-6">
+    <span class="text-green-500 font-bold opacity-80">~</span>
+    <span class="text-muted-foreground/50">$</span>
+    <span class="text-foreground">ls -la ./projects</span>
+  </div>
+
+  <div class="pl-0 sm:pl-6 space-y-6">
+    {
+      projects.map((project: any) => (
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="text-blue-400 opacity-80 hidden sm:inline-block">drwxr-xr-x</span>
+              <a href={project.live_url || project.repo || "#"} target="_blank" rel="noopener noreferrer" class="text-foreground font-medium hover:underline underline-offset-4 decoration-border">
+                {project.name.toLowerCase().replace(/\s+/g, '-')}
+              </a>
+            </div>
+            <div class="flex gap-4 text-[11px] text-muted-foreground opacity-60">
+               {project.live_url && <a href={project.live_url} target="_blank" class="hover:text-foreground">--live</a>}
+               {project.repo && <a href={project.repo} target="_blank" class="hover:text-foreground">--repo</a>}
+            </div>
+          </div>
+          <p class="text-muted-foreground leading-relaxed pl-0 sm:pl-[104px]">
+            {project.description}
+          </p>
+          <div class="flex flex-wrap gap-2 pl-0 sm:pl-[104px] mt-1">
+            <span class="text-muted-foreground/50">deps:</span>
+            <span class="text-muted-foreground opacity-80">
+              [{project.technologies.slice(0, 5).map((tech: string) => tech.toLowerCase()).join(', ')}]
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,13 @@
+{
+  "name": "Testgraders",
+  "description": "A full-stack IELTS practice platform for grading essays and speaking tests. Built the student submission flow, examiner review dashboard, and results delivery system.",
+  "technologies": [
+    "React",
+    "TypeScript",
+    "Tailwind CSS",
+    "Node.js",
+    "PostgreSQL"
+  ],
+  "img_url": "/images/placeholder.png",
+  "order": 3
+}

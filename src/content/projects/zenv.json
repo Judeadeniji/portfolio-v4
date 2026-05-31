@@ -1,0 +1,15 @@
+{
+  "name": "zEnv",
+  "description": "A zero-knowledge secret manager with client-side encryption. Includes a Go API, TypeScript SDK, Cobra CLI, and TanStack Start dashboard featuring a custom crypto engine.",
+  "technologies": [
+    "Go",
+    "TypeScript",
+    "TanStack Start",
+    "Redis",
+    "PostgreSQL",
+    "Docker"
+  ],
+  "repo": "https://github.com/Judeadeniji/zenv-sh",
+  "img_url": "/images/placeholder.png",
+  "order": 0
+}

@@ -1,0 +1,36 @@
+---
+import { getEntry } from 'astro:content';
+
+const profileEntry = await getEntry('profile', 'main');
+const profileData = profileEntry!.data;
+const { email } = profileData.contact;
+const calLink = profileData.contact.cal || "#";
+const twitterHandle = profileData.twitterHandle;
+const twitterUrl = `https://x.com/${twitterHandle}`;
+---
+  <section id="contact" class="space-y-4 mb-16 font-mono text-[13px]" aria-label="Contact Methods">
+    <div class="flex items-center gap-2.5 mb-6">
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="text-muted-foreground/50">$</span>
+      <span class="text-foreground">./contact.sh</span>
+    </div>
+
+    <div class="pl-0 sm:pl-6 space-y-5">
+      <div class="text-muted-foreground mb-4">Choose your preferred method to connect:</div>
+      
+      <a href={calLink} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors">
+        <span class="text-blue-400 opacity-80">-rwxr-xr-x</span>
+        <span class="group-hover:underline underline-offset-4 decoration-border">curl -X POST https://cal.com/book-call</span>
+      </a>
+      
+      <a href={`mailto:${email}`} class="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors">
+        <span class="text-blue-400 opacity-80">-rwxr-xr-x</span>
+        <span class="group-hover:underline underline-offset-4 decoration-border">mail -s "Hello" {email}</span>
+      </a>
+      
+      <a href={twitterUrl} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors">
+        <span class="text-blue-400 opacity-80">-rwxr-xr-x</span>
+        <span class="group-hover:underline underline-offset-4 decoration-border">ping -c 4 x.com/{twitterHandle}</span>
+      </a>
+    </div>
+  </section>

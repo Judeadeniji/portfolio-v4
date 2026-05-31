@@ -1,0 +1,12 @@
+{
+  "name": "Socratic Ink",
+  "description": "Marketing site for a ghostwriting agency built with Astro for fast static delivery. Features a conversion-focused contact flow, portfolio, and services pages.",
+  "technologies": [
+    "Astro",
+    "TypeScript",
+    "Tailwind CSS"
+  ],
+  "live_url": "https://socraticink.netlify.app",
+  "img_url": "/images/placeholder.png",
+  "order": 4
+}
