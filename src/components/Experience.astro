@@ -1,4 +1,9 @@
 ---
+import { getCollection } from "astro:content";
+import { marked } from "marked";
+
+const rawExperience = await getCollection("experience");
+const experiences = rawExperience.sort((a: any, b: any) => a.data.order - b.data.order).map((e: any) => e.data);
 ---
   <section id="experience" class="space-y-4 mb-16 font-mono text-[13px]" aria-label="Experience History">
     <div class="flex items-center gap-2.5 mb-6">
@@ -8,31 +13,33 @@
     </div>
 
     <div class="pl-0 sm:pl-6 space-y-10">
-      {/* Experience 1 */}
-      <div class="space-y-3">
-        <div class="text-foreground font-medium flex flex-col sm:flex-row sm:justify-between gap-1">
-          <span>[2025-Present] Lead Frontend Developer @ Hospio360</span>
-          <span class="text-muted-foreground/50">Remote</span>
+      {experiences.map((exp: any) => (
+        <div class="space-y-3">
+          <div class="text-foreground font-medium flex flex-col sm:flex-row sm:justify-between gap-1">
+            <span>[{exp.period}] {exp.role} @ {exp.company}</span>
+            <span class="text-muted-foreground/50">{exp.location}</span>
+          </div>
+          <div class="text-muted-foreground leading-relaxed prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none" set:html={marked.parse(exp.description)}>
+          </div>
+          {exp.highlights && exp.highlights.length > 0 && (
+            <details class="group pt-1">
+              <summary class="cursor-pointer text-muted-foreground hover:text-foreground transition-colors list-none flex items-center gap-2 select-none w-max [&::-webkit-details-marker]:hidden">
+                <span class="text-green-500 font-bold opacity-80">~</span>
+                <span class="text-muted-foreground/50">$</span>
+                <span class="underline underline-offset-4 decoration-border transition-colors">./show_highlights.sh</span>
+                <span class="text-[9px] opacity-50 transition-transform duration-200 group-open:rotate-180 ml-1">▼</span>
+              </summary>
+              <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2 mt-3">
+                {exp.highlights.map((highlight: string) => (
+                  <div class="flex gap-2">
+                    <span>></span>
+                    <div class="prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none" set:html={marked.parseInline(highlight)}></div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
-        <p class="text-muted-foreground leading-relaxed">
-          Leading all frontend architecture for a pre-launch hotel management SaaS. Own the entire frontend across two surfaces — a Next.js marketing site and a TanStack Start operations dashboard.
-        </p>
-        <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2 pt-2">
-          <div>> Architected the full frontend from scratch</div>
-          <div>> Established component system and design tokens</div>
-          <div>> Optimized performance and responsiveness</div>
-        </div>
-      </div>
-
-      {/* Experience 2 */}
-      <div class="space-y-3">
-        <div class="text-foreground font-medium flex flex-col sm:flex-row sm:justify-between gap-1">
-          <span>[2023-2025] Fullstack Developer @ Wittyr</span>
-          <span class="text-muted-foreground/50">Remote</span>
-        </div>
-        <p class="text-muted-foreground leading-relaxed">
-          Built the core MVP using Next.js, tRPC, and Prisma. Implemented real-time collaboration features with WebSockets and designed a modular backend architecture to support scaling.
-        </p>
-      </div>
+      ))}
     </div>
   </section>

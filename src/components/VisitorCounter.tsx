@@ -18,7 +18,7 @@ export default function VisitorCounter() {
         localStorage.setItem('visited_portfolio', 'true');
       }
 
-      fetch('https://corsproxy.io/?' + encodeURIComponent(endpoint))
+      fetch(endpoint)
         .then(res => res.json())
         .then(data => {
           if (data && data.count) {
