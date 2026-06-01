@@ -33,7 +33,7 @@ const experiences = rawExperience.sort((a: any, b: any) => a.data.order - b.data
                 {exp.highlights.map((highlight: string) => (
                   <div class="flex gap-2">
                     <span>></span>
-                    <div class="prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none" set:html={marked.parseInline(highlight)}></div>
+                    <div class="prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none text-xs" set:html={marked.parseInline(highlight)}></div>
                   </div>
                 ))}
               </div>

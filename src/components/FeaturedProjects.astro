@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { marked } from "marked";
 
 // Load projects from Astro content collections
 const rawProjects = await getCollection("projects");
@@ -29,15 +30,33 @@ const projects = rawProjects.sort((a: any, b: any) => a.data.order - b.data.orde
                {project.repo && <a href={project.repo} target="_blank" class="hover:text-foreground">--repo</a>}
             </div>
           </div>
-          <p class="text-muted-foreground leading-relaxed pl-0 sm:pl-[104px]">
-            {project.description}
-          </p>
-          <div class="flex flex-wrap gap-2 pl-0 sm:pl-[104px] mt-1">
+          <div class="text-muted-foreground leading-relaxed pl-0 sm:pl-26 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none" set:html={marked.parse(project.description)}>
+          </div>
+          <div class="flex flex-wrap gap-2 pl-0 sm:pl-26 mt-1">
             <span class="text-muted-foreground/50">deps:</span>
             <span class="text-muted-foreground opacity-80">
               [{project.technologies.slice(0, 5).map((tech: string) => tech.toLowerCase()).join(', ')}]
             </span>
           </div>
+          
+          {project.features && project.features.length > 0 && (
+            <details class="group pt-1 pl-0 sm:pl-26">
+              <summary class="cursor-pointer text-muted-foreground hover:text-foreground transition-colors list-none flex items-center gap-2 select-none w-max [&::-webkit-details-marker]:hidden">
+                <span class="text-green-500 font-bold opacity-80">~</span>
+                <span class="text-muted-foreground/50">$</span>
+                <span class="underline underline-offset-4 decoration-border transition-colors">./show_features.sh</span>
+                <span class="text-[9px] opacity-50 transition-transform duration-200 group-open:rotate-180 ml-1">▼</span>
+              </summary>
+              <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2 mt-3">
+                {project.features.map((feature: string) => (
+                  <div class="flex gap-2">
+                    <span>></span>
+                    <div class="prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground max-w-none text-xs" set:html={marked.parseInline(feature)}></div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
       ))
     }

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { globalEngine } from '../lib/terminalEngine';
 
 type HistoryItem = {
   command: string;
@@ -21,111 +22,15 @@ export default function GlobalTerminal() {
     setCommandHistory(prev => [...prev, trimmed]);
     setHistoryIndex(-1);
 
-    const args = trimmed.split(' ').filter(Boolean);
-    const baseCmd = args[0].toLowerCase();
+    const result = globalEngine.execute(trimmed, {
+      setHistory,
+      setInput,
+      setIsOpen
+    });
 
-    let output: React.ReactNode = null;
+    if (result.isClear) return;
 
-    switch (baseCmd) {
-      case 'help':
-        output = (
-          <div className="space-y-1">
-            <div>Available commands:</div>
-            <div><span className="text-blue-400">cd</span> &lt;dir&gt; - Navigate (e.g., cd /blog, cd ~)</div>
-            <div><span className="text-blue-400">ls</span> - List directory contents</div>
-            <div><span className="text-blue-400">cat</span> &lt;file&gt; - View file contents</div>
-            <div><span className="text-blue-400">clear</span> - Clear terminal</div>
-            <div><span className="text-blue-400">whoami</span> - Print current user</div>
-          </div>
-        );
-        break;
-      case 'clear':
-        setHistory([]);
-        setInput('');
-        setIsOpen(false);
-        return;
-      case 'whoami':
-        output = 'guest';
-        break;
-      case 'ls':
-        const path = window.location.pathname;
-        if (path.includes('/blog')) {
-          output = (
-            <div className="flex flex-wrap gap-4">
-              <span className="text-blue-400">../&nbsp;&nbsp;&nbsp;</span>
-              <span>content.md&nbsp;&nbsp;&nbsp;</span>
-              <span className="text-blue-400">categories/&nbsp;&nbsp;&nbsp;</span>
-              <span className="text-blue-400">featured/</span>
-            </div>
-          );
-        } else {
-          output = (
-            <div className="flex flex-wrap gap-4">
-              <span className="text-blue-400">blog/&nbsp;&nbsp;&nbsp;</span>
-              <span className="text-blue-400">projects/&nbsp;&nbsp;&nbsp;</span>
-              <span className="text-blue-400">experience/&nbsp;&nbsp;&nbsp;</span>
-              <span className="text-blue-400">contact/&nbsp;&nbsp;&nbsp;</span>
-              <span>resume.pdf</span>
-            </div>
-          );
-        }
-        break;
-      case 'cd':
-        const target = args[1] || '~';
-        if (target === '~' || target === '/' || target === '/home') {
-          window.location.href = '/';
-          output = 'Navigating home...';
-        } else if (target === 'blog' || target === '/blog') {
-          window.location.href = '/blog';
-          output = 'Navigating to blog...';
-        } else if (target === 'projects' || target === './projects' || target === '/#projects') {
-          window.location.href = '/#projects';
-          output = 'Navigating to projects...';
-        } else if (target === 'experience' || target === './experience' || target === '/#experience') {
-          window.location.href = '/#experience';
-          output = 'Navigating to experience...';
-        } else if (target === 'contact' || target === './contact' || target === '/#contact') {
-          window.location.href = '/#contact';
-          output = 'Navigating to contact...';
-        } else if (target === 'categories' || target === './categories') {
-          window.location.href = '/blog/categories';
-          output = 'Opening categories...';
-        } else if (target === 'featured' || target === './featured') {
-          window.location.href = '/blog/featured';
-          output = 'Opening featured...';
-        } else if (target.startsWith('categories/')) {
-          const catName = target.replace('categories/', '');
-          window.location.href = `/blog/categories/${catName}`;
-          output = `Opening category ${catName}...`;
-        } else if (window.location.pathname.includes('/blog/categories') && target !== '..') {
-          window.location.href = `/blog/categories/${target}`;
-          output = `Opening category ${target}...`;
-        } else if (target === '..') {
-          window.history.back();
-          output = 'Going back...';
-        } else {
-          output = `cd: ${target}: No such file or directory`;
-        }
-        break;
-      case 'cat':
-        const file = args[1];
-        if (!file) {
-          output = 'cat: missing file operand';
-        } else if (file === 'resume.pdf' || file === 'resume') {
-          window.open('/adeniji-oluwaferanmi-resume.pdf', '_blank');
-          output = 'Opening resume...';
-        } else {
-          output = `cat: ${file}: No such file or directory`;
-        }
-        break;
-      case 'sudo':
-        output = 'guest is not in the sudoers file. This incident will be reported.';
-        break;
-      default:
-        output = `bash: ${baseCmd}: command not found`;
-    }
-
-    setHistory(prev => [...prev, { command: trimmed, output }]);
+    setHistory(prev => [...prev, { command: trimmed, output: result.output }]);
     setInput('');
     setIsOpen(true);
     

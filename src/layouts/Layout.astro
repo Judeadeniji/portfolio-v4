@@ -65,7 +65,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
             </div>
             <div class="relative w-full max-w-4xl mx-auto pl-4 pr-0 sm:px-6 lg:px-0">
                 <div class="flex items-center justify-between h-14 sm:h-16">
-                    <div class="flex items-center gap-3 sm:gap-5 text-[12px] sm:text-[13px] font-mono text-muted-foreground overflow-x-auto no-scrollbar py-2 w-full [mask-image:linear-gradient(to_right,black_85%,transparent)] sm:[mask-image:none]">
+                    <div class="flex items-center gap-3 sm:gap-5 text-[12px] sm:text-[13px] font-mono text-muted-foreground overflow-x-auto no-scrollbar py-2 w-full mask-[linear-gradient(to_right,black_85%,transparent)] sm:mask-none">
                         <div class="items-center gap-2.5 shrink-0 hidden sm:flex">
                           <span class="text-green-500 font-bold opacity-80">~</span>
                           <span class="opacity-50">$</span>
@@ -97,7 +97,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
 
         <main
             id="main-content"
-            class="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-0 pt-32 pb-32 grow outline-none"
+            class="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-0 pt-18 sm:pt-32 pb-16 sm:pb-32 grow outline-none"
             tabindex="-1"
         >
             <slot />
