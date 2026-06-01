@@ -45,6 +45,20 @@ body {
   a, button, input, select, textarea {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-[2px];
   }
+  
+  /* Cursor indications for different inputs */
+  a, button, select, input[type="submit"], input[type="button"], input[type="checkbox"], input[type="radio"] {
+    @apply cursor-pointer;
+  }
+  
+  input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="search"], textarea {
+    @apply cursor-text;
+  }
+
+  /* Faint underline for all links to help non-technical users */
+  a {
+    @apply underline decoration-foreground/20 hover:decoration-foreground/60 underline-offset-4 transition-colors;
+  }
 }
 
 @utility no-scrollbar {
