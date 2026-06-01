@@ -8,14 +8,17 @@ import mdx from '@astrojs/mdx';
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
+import { unified } from '@astrojs/markdown-remark';
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: ['!no-underline', 'hover:text-muted-foreground', 'transition-colors'] } }]
-    ],
+    processor: unified({
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: ['!no-underline', 'hover:text-muted-foreground', 'transition-colors'] } }]
+      ],
+    }),
   },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),
