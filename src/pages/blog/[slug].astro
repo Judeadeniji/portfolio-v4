@@ -43,9 +43,9 @@ const author = profileEntry!.data;
         <span>[{post.data.category}]</span>
         <span>{new Date(post.data.date).toLocaleDateString('en-US', {
           year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }).replace(/\//g, '-')}</span>
+          month: 'long',
+          day: 'numeric'
+        })}</span>
       </div>
     </header>
     

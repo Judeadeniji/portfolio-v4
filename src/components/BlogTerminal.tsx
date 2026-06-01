@@ -116,7 +116,7 @@ export default function BlogTerminal({ posts }: { posts: Post[] }) {
               <div className="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
               <div className="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
                 <span className="text-foreground/40">
-                  [{new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-')}]
+                  [{new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}]
                 </span>
                 <span className="truncate max-w-62.5 hidden md:inline-block"># {post.data.title}</span>
               </div>
