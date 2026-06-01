@@ -74,18 +74,18 @@ const author = profileEntry!.data;
     </article>
 
     {/* Author Section */}
-<div class="border-t border-border pt-8 mt-12 mb-12 font-mono">
+<div class="border-t border-border pt-8 mt-12 font-mono">
   <div class="flex items-center gap-2.5 mb-4 text-[13px]">
     <span class="text-green-500 font-bold opacity-80">~</span>
     <span class="text-muted-foreground/50">$</span>
     <span class="text-foreground">whoami --author</span>
   </div>
   <div class="flex items-start gap-4">
-    <img src={author.avatarUrl} alt={author.name} class="w-12 h-12 rounded-md border border-border ring-2 ring-background shadow-sm shrink-0" />
+    <img src={author.avatarUrl} alt={author.name} class="size-14 rounded-md border border-border ring-2 ring-background shadow-sm shrink-0" />
     <div>
       <div class="text-[15px] font-medium text-foreground leading-none mb-0.5">{author.name}</div>
       <div class="text-[13px] text-muted-foreground/50 mb-3">Product Engineer</div>
-      <div class="text-[14px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={marked.parse(author.bio)} />
+      <div class="text-[13px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={marked.parse(author.bio)} />
       <div class="flex flex-wrap gap-4 text-[13px] text-muted-foreground">
         <a href={`https://x.com/${author.twitterHandle}`} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--twitter</a>
         <a href={author.contact.github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--github</a>
