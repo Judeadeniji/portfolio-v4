@@ -6,8 +6,17 @@ import react from '@astrojs/react';
 
 import mdx from '@astrojs/mdx';
 
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
+
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: ['!no-underline', 'hover:text-muted-foreground', 'transition-colors'] } }]
+    ],
+  },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),
   },
