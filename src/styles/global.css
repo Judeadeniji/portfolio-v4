@@ -57,7 +57,7 @@ body {
 
   /* Faint underline for all links to help non-technical users */
   a {
-    @apply underline decoration-foreground/20 hover:decoration-foreground/60 underline-offset-4 transition-colors;
+    @apply underline decoration-foreground/10 hover:decoration-foreground/60 underline-offset-4 transition-colors;
   }
 }
 
