@@ -10,8 +10,11 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import { unified } from '@astrojs/markdown-remark';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://o-feranmi.netlify.app',
   markdown: {
     processor: unified({
       rehypePlugins: [
@@ -35,5 +38,5 @@ export default defineConfig({
     domains: ['avatars.githubusercontent.com', 'cdn.simpleicons.org'],
   },
 
-  integrations: [react(), mdx()]
+  integrations: [react(), mdx(), sitemap()]
 });
