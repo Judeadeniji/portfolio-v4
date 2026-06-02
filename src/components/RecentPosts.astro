@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+
+const rawPosts = await getCollection("blog");
+const posts = rawPosts
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
+  .slice(0, 3);
+---
+
+<section id="blog" class="mb-16 font-mono text-[13px]">
+  <h2 class="sr-only">Recent Posts</h2>
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-2.5" aria-hidden="true">
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="text-muted-foreground/50">$</span>
+      <span class="text-foreground">ls -t ./blog | head -n 3</span>
+    </div>
+    <a href="/blog" class="text-muted-foreground hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors">
+      cd ./blog &rarr;
+    </a>
+  </div>
+
+  <div class="pl-0 sm:pl-6 space-y-4">
+    {posts.map(post => (
+      <a href={`/blog/${post.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
+        <div class="flex items-center gap-2.5 shrink-0">
+          <span class="text-muted-foreground/50">-rw-r--r--</span>
+          <span class="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
+        </div>
+        <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+        <div class="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
+          <span class="text-foreground/40">
+            [{new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}]
+          </span>
+          <span class="truncate max-w-62.5 hidden md:inline-block"># {post.id}.mdx</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

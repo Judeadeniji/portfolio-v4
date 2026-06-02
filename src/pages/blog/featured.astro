@@ -40,12 +40,12 @@ const schema = {
           <a href={`/blog/${post.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
             <div class="flex items-center gap-2.5 shrink-0">
               <span class="text-yellow-500/80">★</span>
-              <span class="group-hover:underline underline-offset-4 decoration-border">{post.id}.mdx</span>
+              <span class="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
             </div>
             <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
             <div class="opacity-60 flex items-center gap-2 shrink-0">
               <span class="text-foreground/40">[{post.data.category}]</span>
-              <span class="truncate max-w-62.5 hidden md:inline-block"># {post.data.title}</span>
+              <span class="truncate max-w-62.5 hidden md:inline-block"># {post.id}.mdx</span>
             </div>
           </a>
         ))}
