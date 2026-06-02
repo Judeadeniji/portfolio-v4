@@ -1,6 +1,8 @@
 import { getCollection, getEntry } from 'astro:content';
 import { render } from 'takumi-js';
 import React from 'react';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -16,6 +18,16 @@ export async function GET({ props }: any) {
   // Fetch author data dynamically
   const profileEntry = await getEntry('profile', 'main');
   const author = profileEntry!.data;
+
+  // Convert local avatar to base64 to prevent takumi-js fetch failures during build
+  let avatarSrc = author.avatarUrl;
+  if (avatarSrc.startsWith('/')) {
+    const avatarPath = path.join(process.cwd(), 'public', avatarSrc);
+    if (fs.existsSync(avatarPath)) {
+      const avatarBuffer = fs.readFileSync(avatarPath);
+      avatarSrc = `data:image/png;base64,${avatarBuffer.toString('base64')}`;
+    }
+  }
 
   // Use Geist from Takumi example or load local font if preferred
   const fontBuffer = await fetch("https://takumi.kane.tw/fonts/Geist.woff2").then(r => r.arrayBuffer());
@@ -94,14 +106,14 @@ export async function GET({ props }: any) {
         'div',
         { style: { display: 'flex', alignItems: 'center', gap: '24px' } },
         React.createElement('img', { 
-          src: author.avatarUrl,
-          style: { width: '80px', height: '80px', borderRadius: '40px', border: '2px solid #3f3f46' } 
+          src: avatarSrc,
+          style: { width: '80px', height: '80px', borderRadius: '10px', border: '2px solid #3f3f46' } 
         }),
         React.createElement(
           'div',
           { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
           React.createElement('span', { style: { fontSize: '28px', fontWeight: 600 } }, author.name),
-          React.createElement('span', { style: { fontSize: '22px', color: '#a1a1aa' } }, author.twitterHandle ? `@${author.twitterHandle}` : 'Software Engineer')
+          React.createElement('span', { style: { fontSize: '22px', color: '#a1a1aa' } }, author.twitterHandle ? `@${author.twitterHandle}` : 'Products Engineer')
         )
       ),
       // Date

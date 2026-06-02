@@ -27,6 +27,18 @@ const author = profileEntry!.data;
 ---
 
 <Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "datePublished": new Date(post.data.date).toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": author.name,
+      "url": Astro.url.origin
+    }
+  })} />
   <div class="mb-12">
     <a href="/blog" class="font-mono text-[13px] text-muted-foreground hover:text-foreground transition-colors mb-8 inline-flex items-center gap-2">
       <span class="text-green-500 font-bold opacity-80">~</span> $ cd ..
@@ -141,5 +153,41 @@ const author = profileEntry!.data;
   
   .custom-prose a:hover {
     color: var(--color-muted-foreground);
+  }
+
+  /* Terminal Vibes for Article Body */
+  .custom-prose blockquote {
+    border-left: 2px solid #22c55e;
+    background-color: color-mix(in srgb, #22c55e 5%, transparent);
+    padding: 1rem 1.5rem;
+    color: var(--color-muted-foreground);
+    font-style: normal;
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .custom-prose blockquote p::before,
+  .custom-prose blockquote p::after {
+    display: none;
+  }
+  
+  .custom-prose :not(pre) > code {
+    background-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+    color: var(--color-foreground);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+  
+  .custom-prose h2::before,
+  .custom-prose h3::before,
+  .custom-prose h4::before {
+    content: ">_";
+    color: #22c55e;
+    opacity: 0.8;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 0.9em;
   }
 </style>
