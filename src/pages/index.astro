@@ -6,14 +6,45 @@ import TechStack from "../components/TechStack.astro";
 import FeaturedProjects from "../components/FeaturedProjects.astro";
 import Experience from "../components/Experience.astro";
 import Contact from "../components/Contact.astro";
-import { getEntry } from "astro:content";
+import { getEntry, getCollection } from "astro:content";
 
 const profileEntry = await getEntry("profile", "main");
 const name = profileEntry!.data.name;
 const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, ''); // Use first sentence of bio
+
+const rawProjects = await getCollection("projects");
+const schemaProjects = rawProjects.map(p => ({
+  "@type": "SoftwareApplication",
+  "name": p.data.name,
+  "description": p.data.description,
+  "url": p.data.live_url || p.data.repo || Astro.url.origin
+}));
+
+const rawExperience = await getCollection("experience");
+const schemaExperience = rawExperience.map(e => ({
+  "@type": "EmployeeRole",
+  "roleName": e.data.role,
+  "startDate": e.data.period,
+  "worksFor": {
+    "@type": "Organization",
+    "name": e.data.company
+  }
+}));
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": name,
+    "hasPart": schemaProjects,
+    "worksFor": schemaExperience
+  }
+};
 ---
 
 <Layout title={`${name} | Portfolio`} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <ProfileHeader />
   <Contributions />
   <TechStack />

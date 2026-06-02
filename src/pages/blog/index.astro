@@ -21,9 +21,31 @@ const posts = rawPosts
   }));
 
 const description = `Explore articles, tutorials, and thoughts on software engineering by ${name}.`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Blog | " + name,
+  "description": description,
+  "url": Astro.url.href,
+  "about": {
+    "@type": "Thing",
+    "name": "Software Engineering Articles"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": posts.map((post, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": new URL(`/blog/${post.id}`, Astro.url.origin).href,
+      "name": post.data.title
+    }))
+  }
+};
 ---
 
 <Layout title={`${name} | Blog`} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <div class="space-y-8 mb-12">
     <div class="text-[10px] font-medium uppercase tracking-widest text-muted-foreground font-mono">Blog</div>
     <BlogTerminal client:load posts={posts} />
