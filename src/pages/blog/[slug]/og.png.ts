@@ -1,4 +1,4 @@
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { render } from 'takumi-js';
 import React from 'react';
 
@@ -13,6 +13,10 @@ export async function getStaticPaths() {
 export async function GET({ props }: any) {
   const { post } = props;
 
+  // Fetch author data dynamically
+  const profileEntry = await getEntry('profile', 'main');
+  const author = profileEntry!.data;
+
   // Use Geist from Takumi example or load local font if preferred
   const fontBuffer = await fetch("https://takumi.kane.tw/fonts/Geist.woff2").then(r => r.arrayBuffer());
 
@@ -24,58 +28,88 @@ export async function GET({ props }: any) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#09090b', // zinc-950
-        color: '#fafafa', // zinc-50
-        padding: '64px',
+        backgroundColor: '#000000', 
+        color: '#fafafa',
+        padding: '80px',
         fontFamily: 'Geist',
-        border: '4px solid #27272a',
+        border: '16px solid #18181b', // zinc-900 border
       }
     },
+    // Top Section (Terminal Path & Category)
     React.createElement(
       'div',
       {
         style: {
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
-          marginBottom: '32px',
-          fontSize: '32px',
+          justifyContent: 'space-between',
+          marginBottom: 'auto',
+          fontSize: '28px',
           fontFamily: 'monospace',
-          opacity: 0.7
+          opacity: 0.8
         }
       },
-      React.createElement('span', { style: { color: '#22c55e', fontWeight: 'bold' } }, '~'),
-      React.createElement('span', { style: { color: '#a1a1aa' } }, '$'),
-      React.createElement('span', { style: {} }, `./blog/${post.id}.mdx`)
+      React.createElement(
+        'div',
+        { style: { display: 'flex', alignItems: 'center', gap: '16px' } },
+        React.createElement('span', { style: { color: '#22c55e', fontWeight: 600 } }, '~'),
+        React.createElement('span', { style: { color: '#a1a1aa' } }, '$'),
+        React.createElement('span', {}, `./blog/${post.id}.mdx`)
+      ),
+      React.createElement('span', { style: { color: '#a1a1aa' } }, `[${post.data.category}]`)
     ),
+    
+    // Middle Section (Title)
     React.createElement(
       'div',
       {
         style: {
-          fontSize: '72px',
-          fontWeight: 'bold',
-          lineHeight: '1.1',
-          marginBottom: '24px',
-          maxWidth: '900px'
+          fontSize: '76px',
+          fontWeight: 500, // Reduced from 'bold' (700) to 500
+          lineHeight: '1.2',
+          letterSpacing: '-0.02em',
+          maxWidth: '1000px',
+          marginTop: '40px',
+          marginBottom: '60px',
         }
       },
       post.data.title
     ),
+
+    // Bottom Section (Author Profile & Date)
     React.createElement(
       'div',
       {
         style: {
-          fontSize: '32px',
-          color: '#a1a1aa', // muted-foreground
-          marginTop: 'auto',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          marginTop: 'auto',
+          paddingTop: '40px',
+          borderTop: '2px dashed #27272a'
         }
       },
-      React.createElement('span', {}, `[${post.data.category}]`),
-      React.createElement('span', {}, new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))
+      // Author info
+      React.createElement(
+        'div',
+        { style: { display: 'flex', alignItems: 'center', gap: '24px' } },
+        React.createElement('img', { 
+          src: author.avatarUrl,
+          style: { width: '80px', height: '80px', borderRadius: '40px', border: '2px solid #3f3f46' } 
+        }),
+        React.createElement(
+          'div',
+          { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
+          React.createElement('span', { style: { fontSize: '28px', fontWeight: 600 } }, author.name),
+          React.createElement('span', { style: { fontSize: '22px', color: '#a1a1aa' } }, author.twitterHandle ? `@${author.twitterHandle}` : 'Software Engineer')
+        )
+      ),
+      // Date
+      React.createElement(
+        'div',
+        { style: { fontSize: '26px', color: '#a1a1aa', fontFamily: 'monospace' } },
+        new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      )
     )
   );
 
