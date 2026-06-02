@@ -190,4 +190,46 @@ const author = profileEntry!.data;
     margin-right: 8px;
     font-size: 0.9em;
   }
+
+  /* Lists as terminal bullet points */
+  .custom-prose ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+  }
+  
+  .custom-prose ul li {
+    position: relative;
+  }
+  
+  .custom-prose ul li::before {
+    content: "*";
+    color: #22c55e;
+    position: absolute;
+    left: -1.2rem;
+    top: 0.1rem;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    opacity: 0.8;
+  }
+  
+  .custom-prose ol {
+    list-style-type: none;
+    counter-reset: terminal-counter;
+    padding-left: 1.5rem;
+  }
+  
+  .custom-prose ol li {
+    position: relative;
+    counter-increment: terminal-counter;
+  }
+  
+  .custom-prose ol li::before {
+    content: "[" counter(terminal-counter) "]";
+    color: #a1a1aa;
+    position: absolute;
+    left: -1.8rem;
+    top: 0.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
 </style>
