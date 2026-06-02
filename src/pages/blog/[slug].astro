@@ -96,7 +96,7 @@ const author = profileEntry!.data;
     <img src={author.avatarUrl} alt={author.name} class="size-14 rounded-md border border-border ring-2 ring-background shadow-sm shrink-0" />
     <div>
       <div class="text-[15px] font-medium text-foreground leading-none mb-0.5">{author.name}</div>
-      <div class="text-[13px] text-muted-foreground/50 mb-3">Product Engineer</div>
+      <div class="text-[13px] text-foreground/50 mb-3">Product Engineer</div>
       <div class="text-[13px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={marked.parse(author.bio)} />
       <div class="flex flex-wrap gap-4 text-[13px] text-muted-foreground">
         <a href={`https://x.com/${author.twitterHandle}`} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--twitter</a>

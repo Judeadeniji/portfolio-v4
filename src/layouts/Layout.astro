@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
 import GlobalTerminal from "../components/GlobalTerminal.tsx";
+import Footer from "@/components/Footer.astro";
 
 interface Props {
     title: string;
@@ -41,6 +42,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={new URL(image, canonicalURL)} />
+        <meta name="robots" content="index, follow" />
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Oluwaferanmi Adeniji",
+            "jobTitle": "Product Engineer",
+            "url": canonicalURL.href,
+            "image": new URL(image, canonicalURL).href,
+            "sameAs": [
+                "https://github.com/Judeadeniji",
+                "https://www.linkedin.com/in/feranmi-adeniji",
+                "https://x.com/iam_feranmi_"
+            ]
+        })} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -60,11 +75,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
         {/* Navbar */}
         <nav class="fixed top-0 left-0 right-0 z-50">
             <div
-                class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-background mask-[linear-gradient(to_bottom,black_80%,transparent)]"
+                class="pointer-events-none absolute inset-x-0 top-0 h-10 bg-background mask-[linear-gradient(to_bottom,black_80%,transparent)]"
             >
             </div>
             <div class="relative w-full max-w-4xl mx-auto pl-4 pr-0 sm:px-6 lg:px-0">
-                <div class="flex items-center justify-between h-14 sm:h-16">
+                <div class="flex items-center justify-between h-7 sm:h-8">
                     <div class="flex items-center gap-3 sm:gap-5 text-[12px] sm:text-[13px] font-mono text-muted-foreground overflow-x-auto no-scrollbar py-2 w-full mask-[linear-gradient(to_right,black_85%,transparent)] sm:mask-none">
                         <div class="items-center gap-2.5 shrink-0 hidden sm:flex">
                           <span class="text-green-500 font-bold opacity-80">~</span>
@@ -97,10 +112,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
 
         <main
             id="main-content"
-            class="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-0 pt-18 sm:pt-32 pb-16 sm:pb-32 grow outline-none"
+            class="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-0 pt-18 sm:pt-32 pb-16 grow outline-none"
             tabindex="-1"
         >
             <slot />
+            <Footer />
         </main>
         
         <GlobalTerminal client:load />

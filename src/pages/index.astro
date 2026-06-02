@@ -6,12 +6,11 @@ import TechStack from "../components/TechStack.astro";
 import FeaturedProjects from "../components/FeaturedProjects.astro";
 import Experience from "../components/Experience.astro";
 import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
 import { getEntry } from "astro:content";
 
 const profileEntry = await getEntry("profile", "main");
 const name = profileEntry!.data.name;
-const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, ''); // Use first sentence of bio
+const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, ''); // Use first sentence of bio
 ---
 
 <Layout title={`${name} | Portfolio`} description={description}>
@@ -21,5 +20,4 @@ const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, 
   <FeaturedProjects />
   <Experience />
   <Contact />
-  <Footer />
 </Layout>

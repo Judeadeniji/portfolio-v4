@@ -1,8 +1,9 @@
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { render } from 'takumi-js';
 import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
+import type { APIRoute } from 'astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -12,7 +13,9 @@ export async function getStaticPaths() {
   }));
 }
 
-export async function GET({ props }: any) {
+export const GET: APIRoute<{
+  post: CollectionEntry<'blog'>
+}> = async ({ props }) => {
   const { post } = props;
 
   // Fetch author data dynamically
