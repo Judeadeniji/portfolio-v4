@@ -1,0 +1,15 @@
+{
+  "order": 1,
+  "period": "May 2025–Present",
+  "role": "Backend Developer",
+  "company": "GoLodge",
+  "location": "Lagos, Nigeria (remote)",
+  "description": "Designed and implemented a robust booking system supporting partial payments and intricate multi-role logic (host, user, admin), significantly enhancing transaction flexibility and platform security.",
+  "highlights": [
+    "Built onboarding, profiles, listings (add, update, delete), and collections system.",
+    "Integrated Better-Auth, PostHog tracking, and blog (Sanity + Next.js).",
+    "Used Hono, Turso, Drizzle, Cloudinary, and Cloudflare stack.",
+    "Implemented secure cookie handling, Cloudflare DDoS protection, and privacy-safe API integrations.",
+    "Architecting upcoming systems: messaging, negotiations, payouts, credit system, KYC, and geo-contenting."
+  ]
+}

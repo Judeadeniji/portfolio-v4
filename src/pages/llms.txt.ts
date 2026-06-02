@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ site }) => {
   // Sort posts by date descending
   posts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
   
-  const base = site ? site.toString() : 'https://your-live-domain.com/';
+  const base = site ? site.toString() : 'https://oferanmi.netlify.app/';
   
   // Strip markdown and HTML from the first sentence of the bio
   const cleanBio = profile.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '');

@@ -1,0 +1,15 @@
+{
+  "order": 2,
+  "period": "Mar 2025",
+  "role": "Fullstack Developer",
+  "company": "Testgraders",
+  "location": "Freelance",
+  "description": "Led the end-to-end development of a global IELTS practice test grading platform from conception, enabling expert feedback on essays and speaking modules.",
+  "highlights": [
+    "Architected and implemented a high-performance, scalable full-stack solution using Next.js, Hono, and Cloudflare's serverless stack (D1, R2, KV, Durable Objects) for optimal efficiency and global reach.",
+    "Developed comprehensive grader and student dashboards, an in-app notification system, and robust media handling (audio/video) to streamline user workflows and content delivery.",
+    "Engineered a sophisticated, fair grader-distribution algorithm and a bi-directional review system to ensure equitable workload and quality control.",
+    "Implemented TanStack Table for efficient management of large datasets and crafted a responsive, custom UI with Tailwind CSS and shadcn/ui to enhance user experience.",
+    "Established CI/CD pipelines to automate deployments and streamline development workflows, supporting continuous feature delivery."
+  ]
+}
