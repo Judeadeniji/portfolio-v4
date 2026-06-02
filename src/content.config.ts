@@ -29,7 +29,6 @@ const projects = defineCollection({
     technologies: z.array(z.string()),
     repo: z.string().optional(),
     live_url: z.string().optional(),
-    img_url: z.string(),
     features: z.array(z.string()).optional(),
   }),
 });
