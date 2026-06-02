@@ -25,7 +25,9 @@ const bio = profileData.bio;
       <div class="flex flex-row gap-4 sm:gap-6 items-start pl-0 sm:pl-6">
         <img
           src={avatarUrl}
-          alt="Profile avatar"
+          alt={`Profile avatar for ${name}`}
+          loading="eager"
+          fetchpriority="high"
           class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border border-border shrink-0"
         />
         <div class="space-y-3 text-muted-foreground grow">
@@ -55,7 +57,8 @@ const bio = profileData.bio;
     </div>
 
     <div class="space-y-4">
-      <div class="flex items-center gap-2.5">
+      <h2 class="sr-only">Bio</h2>
+      <div class="flex items-center gap-2.5" aria-hidden="true">
         <span class="text-green-500 font-bold opacity-80">~</span>
         <span class="text-muted-foreground/50">$</span>
         <span class="text-foreground">cat bio.md</span>

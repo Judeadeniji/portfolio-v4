@@ -8,7 +8,8 @@ const projects = rawProjects.sort((a: any, b: any) => a.data.order - b.data.orde
 ---
 
 <section id="projects" class="mb-16 font-mono text-[13px]">
-  <div class="flex items-center gap-2.5 mb-6">
+  <h2 class="sr-only">Featured Projects</h2>
+  <div class="flex items-center gap-2.5 mb-6" aria-hidden="true">
     <span class="text-green-500 font-bold opacity-80">~</span>
     <span class="text-muted-foreground/50">$</span>
     <span class="text-foreground">ls -la ./projects</span>
