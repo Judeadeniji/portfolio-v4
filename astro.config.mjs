@@ -14,7 +14,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://o-feranmi.netlify.app',
+  site: 'https://oferanmi.netlify.app',
   markdown: {
     processor: unified({
       rehypePlugins: [

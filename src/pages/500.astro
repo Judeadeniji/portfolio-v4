@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+interface Props {
+    error?: unknown;
+}
+const { error } = Astro.props;
+---
+
+<Layout title="500: Server Error | Jude Adeniji">
+  <div class="flex flex-col items-center justify-center min-h-[60vh] text-center font-mono space-y-8">
+    <div class="text-[140px] font-bold leading-none text-foreground/10 select-none">500</div>
+    
+    <div class="space-y-3 max-w-lg mx-auto">
+      <div class="flex items-center justify-center gap-2.5 text-red-500/90 text-[15px]">
+        <span class="text-red-500 font-bold opacity-80">~</span>
+        <span class="text-red-500/50">$</span>
+        <span>./execute_server.sh</span>
+      </div>
+      <p class="text-muted-foreground text-[14px] leading-relaxed">
+        [error] Segmentation fault (core dumped)<br/>
+        The server encountered an unexpected condition that prevented it from fulfilling the request.
+      </p>
+    </div>
+
+    <a 
+      href="/" 
+      class="mt-8 inline-flex items-center gap-2 px-6 py-2.5 border border-border bg-background hover:bg-muted/50 transition-colors text-[13px] text-foreground"
+    >
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="opacity-50">$</span>
+      <span class="underline underline-offset-4 decoration-border">./reboot_system.sh</span>
+    </a>
+  </div>
+</Layout>
