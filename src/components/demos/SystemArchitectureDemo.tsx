@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SystemArchitectureDemo() {
@@ -8,13 +8,16 @@ export default function SystemArchitectureDemo() {
   // Animation state triggers
   const [activeStep, setActiveStep] = useState<number>(0);
 
+  const isRunningRef = useRef(false);
+
   const addLog = (msg: string) => {
     setLogs((prev) => [...prev, `> [${new Date().toLocaleTimeString()}] ${msg}`].slice(-6));
   };
 
   const triggerDeploy = () => {
-    if (isRunning) return;
+    if (isRunningRef.current) return;
     setIsRunning(true);
+    isRunningRef.current = true;
     setLogs([]);
     setActiveStep(1); // Start Git Push payload
     addLog('Webhook received from GitHub.');
@@ -38,11 +41,24 @@ export default function SystemArchitectureDemo() {
             setActiveStep(0);
             addLog('Deployment completed successfully. System idle.');
             setIsRunning(false);
+            isRunningRef.current = false;
           }, 2000);
         }, 1200);
       }, 1500);
     }, 1000);
   };
+
+  useEffect(() => {
+    // Auto play
+    const t = setInterval(() => {
+       if (!isRunningRef.current) {
+          triggerDeploy();
+       }
+    }, 1000);
+    // Initial trigger
+    triggerDeploy();
+    return () => clearInterval(t);
+  }, []);
 
   return (
     <div className="not-prose my-10 font-mono text-[13px] text-muted-foreground w-full">

@@ -8,6 +8,10 @@ featured: true
 
 import HeartbeatSimulation from '../../components/demos/HeartbeatSimulation';
 import SystemArchitectureDemo from '../../components/demos/SystemArchitectureDemo';
+import EnvelopeEncryptionDemo from '../../components/demos/EnvelopeEncryptionDemo';
+import CaddyRoutingDemo from '../../components/demos/CaddyRoutingDemo';
+import ManifestDriftDemo from '../../components/demos/ManifestDriftDemo';
+import ControlPlaneDemo from '../../components/demos/ControlPlaneDemo';
 
 Every developer eventually hits the same wall: you write a beautiful, stateless application, and then you burn an entire weekend fighting with ingress configurations, TLS certificates, and YAML files just to get it online. 
 
@@ -29,6 +33,8 @@ This is a single, stateful binary responsible for global decision-making. It run
 **What about Control Plane failure?**
 By design, the brain is a single point of failure for *deployments*, but not for *uptime*. Because the architecture is decoupled, if the Control Plane goes offline, your existing Worker Agents and the Caddy proxy continue serving traffic uninterrupted. (To ensure resilience, Caddy's dynamic API state is persisted to disk via `caddy.json` snapshots, so even if the proxy itself restarts during a Control Plane outage, no routes are lost.) You lose the ability to deploy new code until the brain reboots, but you don't drop a single user request.
 
+<ControlPlaneDemo client:visible />
+
 ### 2. The Worker Agent (The Hands)
 On every server in your cluster, you install a tiny, stateless Worker Agent. This agent is deliberately dumb. It holds no global state, makes no scheduling decisions, and simply listens to the Control Plane via gRPC to spin up local Docker containers.
 
@@ -49,10 +55,14 @@ We secure the cluster using gRPC over mTLS (Mutual TLS). Trust is bootstrapped d
 
 For environment variables, we implement a strict zero-knowledge architecture. Secrets are secured using envelope encryption - a master Key Encryption Key (KEK) stored securely in the Control Plane protects unique Data Encryption Keys (DEKs) for each payload. When a deployment occurs, the Control Plane passes the encrypted payload and the DEK securely over the mTLS channel. The agent decrypts the secrets in-memory and injects them directly into the Docker container. The plaintext secrets never touch the physical disk.
 
+<EnvelopeEncryptionDemo client:visible />
+
 #### Dynamic Networking without Ingress Controllers
 Managing Nginx configs and rotating SSL certificates is fragile. In our stack, we bypass traditional ingress controllers and integrate directly with Caddy. 
 
 Caddy exposes a local admin API at `localhost:2019`. When a container spins up, the Control Plane dynamically writes JSON route configurations to this API, which Caddy applies instantly without a reload. The proxy handles the upstream mapping and provisions Let's Encrypt certificates automatically. We extend this to local development by forcing environments to bind to a `.localhost` suffix, leveraging native OS DNS resolution for exact production parity.
+
+<CaddyRoutingDemo client:visible />
 
 #### Deterministic Manifests
 Helm charts and complex YAML configurations fail because they force developers to memorize arbitrary schema definitions. We replace them with a single, declarative `.msks` (short for *Meeseeks*) lockfile stored in the repository.
@@ -78,6 +88,8 @@ environments:
 When you push your code, the Control Plane parses this block top-to-bottom and executes it as a deterministic plan. It provisions an isolated PostgreSQL container and a Redis instance, networks both securely to your application, and injects the dynamically generated connection strings directly into your app's environment variables - `DATABASE_URL`, `REDIS_URL` - without you writing a single line of configuration. The cron entry gets registered as a scheduled job on the worker node running your container.
 
 Crucially, how does the system handle manifest drift? The architecture is strictly declarative. If someone SSHes into a server and manually stops a container, the Control Plane detects the mismatch against the `.msks` source of truth during the next heartbeat cycle. It immediately issues a reconciliation command to spin the container back up. 
+
+<ManifestDriftDemo client:visible />
 
 The key design constraint is that the manifest declares *what you need*, not *how to wire it*. You never specify ports, network names, or volume paths. The Control Plane owns those decisions. This means the manifest is portable across every environment in your cluster - staging, production, or a local `.localhost` dev environment - without modification.
 
