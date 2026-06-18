@@ -79,13 +79,18 @@ export const GET: APIRoute<{
       'div',
       {
         style: {
-          fontSize: '76px',
-          fontWeight: 500, // Reduced from 'bold' (700) to 500
+          fontSize: post.data.title.length > 55 ? '56px' : '76px',
+          fontWeight: 500,
           lineHeight: '1.2',
           letterSpacing: '-0.02em',
           maxWidth: '1000px',
           marginTop: '40px',
           marginBottom: '60px',
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }
       },
       post.data.title
