@@ -20,26 +20,32 @@ export const GET: APIRoute = async ({ site }) => {
   const cleanBio = profile.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '');
   
   const blogList = posts.map(post => {
-    const url = new URL(`blog/${post.id}`, base).href;
+    const url = new URL(`llms.txt/blog/${post.id}.md`, base).href;
     return `- [${post.data.title}](${url}): ${post.data.description}`;
   }).join('\n');
 
-  const content = `# ${profile.name} | Portfolio
+  const content = `# ${profile.name}
+
 > ${cleanBio}
 
-## Main sections
+## Table of Contents
+
+### Main Sections
+
 - [Home](${base}): Product Engineer building interactive web applications.
 - [Blog](${new URL('blog', base).href}): Articles on web development, AI orchestration, and software architecture.
 
-## Blog Posts
+### Blog Posts
+
 ${blogList}
 
-## Optional: Key facts
-- ${profile.name} is a Product Engineer based in ${profile.contact.location}.
-- Can be contacted via email at ${profile.contact.email}.
-- GitHub: ${profile.contact.github}
-- LinkedIn: ${profile.contact.linkedin}
-- Twitter/X: https://x.com/${profile.twitterHandle}
+### Key Facts
+
+- [Contact Email](mailto:${profile.contact.email}): Can be contacted via email.
+- [GitHub](${profile.contact.github}): GitHub profile.
+- [LinkedIn](${profile.contact.linkedin}): LinkedIn profile.
+- [Twitter (X)](https://x.com/${profile.twitterHandle}): Twitter/X profile.
+- Location: ${profile.name} is a Product Engineer based in ${profile.contact.location}.
 `;
 
   return new Response(content, {
