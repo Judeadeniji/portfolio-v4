@@ -171,12 +171,39 @@ const author = profileEntry!.data;
   }
   
   .custom-prose :not(pre) > code {
-    background-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+    background-color: transparent;
+    border: 1px solid var(--color-border);
     color: var(--color-foreground);
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    border-radius: 0;
     font-family: var(--font-mono);
     font-size: 0.85em;
+  }
+
+  .custom-prose pre {
+    background-color: var(--color-background) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 0 !important;
+    padding: 1.25rem !important;
+    position: relative;
+    margin-top: 2rem !important;
+  }
+
+  .custom-prose pre::before {
+    content: "~ cat example." attr(data-language);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-background);
+    padding: 0.2rem 0.75rem;
+    color: #22c55e;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: bold;
+    transform: translateY(-100%);
+    z-index: 10;
   }
   
   .custom-prose h2::before,
