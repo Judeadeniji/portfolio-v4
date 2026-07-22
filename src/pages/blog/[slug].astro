@@ -136,6 +136,7 @@ const author = profileEntry!.data;
 </Layout>
 
 <style is:global>
+  @reference "../../styles/global.css"
   .custom-prose a {
     color: var(--color-foreground);
     text-underline-offset: 4px;
@@ -226,6 +227,7 @@ const author = profileEntry!.data;
   
   .custom-prose ul li {
     position: relative;
+    @apply text-sm leading-loose
   }
   
   .custom-prose ul li::before {
@@ -248,6 +250,7 @@ const author = profileEntry!.data;
   .custom-prose ol li {
     position: relative;
     counter-increment: terminal-counter;
+    @apply text-sm
   }
   
   .custom-prose ol li::before {

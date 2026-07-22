@@ -29,8 +29,10 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    esbuild: {
-      jsx: 'automatic'
+    oxc: {
+      jsx: {
+        runtime: "automatic"
+      }
     }
   },
 
