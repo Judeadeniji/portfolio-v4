@@ -59,6 +59,15 @@ body {
   a {
     @apply underline decoration-foreground/10 hover:decoration-foreground/60 underline-offset-4 transition-colors;
   }
+
+  /* Remove default backticks from Tailwind Typography code blocks */
+  .prose code::before,
+  .prose code::after {
+    content: none !important;
+  }
+  .prose code {
+      @apply !text-pink-300;
+  }
 }
 
 @utility no-scrollbar {
