@@ -30,7 +30,7 @@ export default function GlobalTerminal() {
 
     if (result.isClear) return;
 
-    setHistory(prev => [...prev, { command: trimmed, output: result.output }]);
+    setHistory(prev => [...prev, { command: trimmed, output: result.output! }]);
     setInput('');
     setIsOpen(true);
     

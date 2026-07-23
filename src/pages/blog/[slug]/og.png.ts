@@ -142,7 +142,7 @@ export const GET: APIRoute<{
     ]
   });
 
-  return new Response(output, {
+  return new Response(output as BodyInit, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=31536000, immutable',
