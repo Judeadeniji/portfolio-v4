@@ -14,10 +14,12 @@ export const satteriReadingTime = defineMdastPlugin({
     } else if (ctx.vfile?.data?.astro?.frontmatter) {
       ctx.vfile.data.astro.frontmatter.readingTime = minutes;
     } else {
-      // Fallback: prepend a terminal-themed block to the AST
+      // Fallback: prepend a standard MDAST paragraph node
       const readingTimeNode = {
-        type: "html",
-        value: `<div class="font-mono text-[13px] text-muted-foreground mb-8 pb-4 border-b border-dashed border-border/40"><span class="text-green-500 font-bold opacity-80">~</span> <span class="text-muted-foreground/50">$</span> ./calc_read_time.sh<br/><span class="opacity-70">> Estimated reading time: ${minutes} min</span></div>`
+        type: "paragraph",
+        children: [
+          { type: "text", value: `> Estimated reading time: ${minutes} min` }
+        ]
       };
       ctx.insertChildAt(node, 0, readingTimeNode);
     }
