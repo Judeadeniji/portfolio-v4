@@ -3,6 +3,7 @@ import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
 import GlobalTerminal from "../components/GlobalTerminal.tsx";
 import Footer from "@/components/Footer.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
     title: string;
@@ -14,7 +15,7 @@ interface Props {
 const { 
     title, 
     description = "Jude Adeniji - Product Engineer building interactive web applications.",
-    image = "/og-image.png",
+    image = "/og.png",
     schema
 } = Astro.props;
 
@@ -71,6 +72,7 @@ const finalSchema = schema || defaultSchema;
             rel="stylesheet"
         />
         <title>{title}</title>
+        <ClientRouter />
     </head>
     <body
         class="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased relative selection:bg-foreground selection:text-background"
