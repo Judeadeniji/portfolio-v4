@@ -7,5 +7,11 @@
     "Jest"
   ],
   "repo": "https://github.com/Judeadeniji/servex",
+  "features": [
+    "Zero-dependency core architecture",
+    "Radix tree routing for high-speed URL matching",
+    "Built-in middleware support and response streaming",
+    "Fully type-safe context and request handlers"
+  ],
   "order": 3
 }

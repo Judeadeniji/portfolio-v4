@@ -10,5 +10,11 @@
     "Docker"
   ],
   "repo": "https://github.com/Judeadeniji/zenv-sh",
+  "features": [
+    "End-to-End Encryption with AES-256-GCM and Argon2",
+    "CLI tool for seamless CI/CD secret injection",
+    "Self-hostable backend written in Go",
+    "Secure Team Sharing and Role-Based Access Control"
+  ],
   "order": 0
 }

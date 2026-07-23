@@ -10,5 +10,11 @@
     "mpv"
   ],
   "repo": "https://github.com/Judeadeniji/go-ytm",
+  "features": [
+    "Offline caching and playback support",
+    "Native Kitty terminal image rendering for album art",
+    "Vim-like keybindings for ultra-fast navigation",
+    "Python sidecar for robust YouTube Music API extraction"
+  ],
   "order": 1
 }
