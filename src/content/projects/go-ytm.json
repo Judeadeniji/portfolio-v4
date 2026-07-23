@@ -1,0 +1,14 @@
+{
+  "name": "go-ytm",
+  "description": "A terminal-based YouTube Music player with offline playback and high-resolution Kitty graphics. Built using a hybrid architecture with a Go TUI and Python sidecar.",
+  "technologies": [
+    "Go",
+    "Python",
+    "Bubble Tea",
+    "FastAPI",
+    "SQLite",
+    "mpv"
+  ],
+  "repo": "https://github.com/Judeadeniji/go-ytm",
+  "order": 3
+}
