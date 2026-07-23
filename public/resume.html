@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oluwaferanmi Adeniji - Resume</title>
+    <style>
+        :root {
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --bg-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--bg-color);
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                font-size: 12px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            a {
+                text-decoration: none !important;
+                color: var(--text-primary) !important;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .contact-info {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .contact-info a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            margin: 0 4px;
+            transition: border-color 0.2s;
+        }
+
+        .contact-info a:hover {
+            border-color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 14px;
+            margin: 0;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        ul {
+            margin: 6px 0 16px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-meta {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .project-tech {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #111;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+        
+        .print-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Export as PDF</button>
+
+    <div class="header">
+        <h1>Oluwaferanmi Adeniji</h1>
+        <div class="contact-info">
+            Lagos, Nigeria | 
+            <a href="mailto:adenijiferanmi64@gmail.com">adenijiferanmi64@gmail.com</a> | 
+            09048786857 | 
+            <a href="https://github.com/Judeadeniji">GitHub</a> | 
+            <a href="https://www.linkedin.com/in/feranmi-adeniji">LinkedIn</a> | 
+            <a href="https://oferanmi.netlify.app/">Portfolio</a>
+        </div>
+    </div>
+
+    <h2>Summary</h2>
+    <p style="color: var(--text-secondary);">Product-focused Software Engineer bridging the gap between high-performance systems engineering and modern frontend architectures. Deeply experienced in the Go and TypeScript ecosystems. I specialize in building developer tools, secure infrastructure, and end-to-end full-stack products that prioritize both developer experience and end-user impact.</p>
+
+    <h2>Core Competencies</h2>
+    <ul>
+        <li><strong>Languages:</strong> Go, TypeScript, JavaScript, Python</li>
+        <li><strong>Frontend:</strong> React, Next.js, Astro, TanStack Start, Tailwind CSS</li>
+        <li><strong>Backend & Infrastructure:</strong> Hono, FastAPI, Cloudflare (Workers/D1/R2/KV/Durable Objects), Redis, PostgreSQL, Turso, SQLite, Docker, CI/CD</li>
+        <li><strong>Specialized:</strong> AST Manipulation, Cryptography (AES-256-GCM, Argon2), Terminal UI (Bubble Tea)</li>
+    </ul>
+
+    <h2>Experience</h2>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>Backend Developer</h3> | <strong>GoLodge</strong></div>
+            <div class="item-meta">May 2025 – Present | Remote</div>
+        </div>
+        <ul>
+            <li>Architected and implemented a robust booking system handling partial payments and complex multi-role authorization logic (Host, User, Admin).</li>
+            <li>Designed and engineered a fully serverless, highly-available backend on Cloudflare using Hono, Turso, and Drizzle ORM.</li>
+            <li>Implemented robust security policies, including strict cookie handling, edge-level DDoS protection via Cloudflare, and privacy-safe external API integrations.</li>
+            <li>Integrated enterprise tooling including Better-Auth for identity, PostHog for product analytics, and Sanity CMS for blog content delivery.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>Fullstack Developer</h3> | <strong>Testgraders</strong></div>
+            <div class="item-meta">March 2025 | Freelance</div>
+        </div>
+        <ul>
+            <li>Led end-to-end architecture and deployment of a global IELTS practice grading platform utilizing Next.js and Hono.</li>
+            <li>Built a highly scalable backend architecture utilizing Cloudflare's complete serverless stack (D1, R2, KV, Durable Objects) to handle complex audio/video media uploads and global traffic routing.</li>
+            <li>Engineered a proprietary, fair-distribution algorithm to balance grader workloads and designed a bi-directional review system for quality control.</li>
+            <li>Delivered a high-performance frontend using TanStack Table to handle large grading datasets and custom Shadcn/UI for a seamless user experience.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>Fullstack Developer</h3> | <strong>PelzSecret</strong></div>
+            <div class="item-meta">February 2025 | Ibadan, Nigeria</div>
+        </div>
+        <ul>
+            <li>Re-architected a static web template into a high-performance, dynamic e-commerce frontend using Astro.</li>
+            <li>Integrated comprehensive backend APIs and secure payment gateways to establish a resilient, end-to-end checkout flow.</li>
+        </ul>
+    </div>
+
+    <h2>Technical Projects (Open Source)</h2>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>venndor</h3> <span class="project-tech">| Go, Cobra, Node.js, AST</span></div>
+            <div class="item-meta"><a href="https://github.com/judeadeniji/venndor">GitHub</a></div>
+        </div>
+        <ul>
+            <li>Built a high-performance CLI tool to securely vendor npm packages directly into a repository as owned source code.</li>
+            <li>Engineered intelligent package manager detection and non-destructive AST manipulations to seamlessly integrate with native workspace configurations.</li>
+            <li>Implemented robust offline Diff & Patch generation enabling developers to commit local hacks/fixes that automatically re-apply over upstream version bumps.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>zEnv</h3> <span class="project-tech">| Go, TypeScript, TanStack Start, Redis, PostgreSQL, Docker</span></div>
+            <div class="item-meta"><a href="https://github.com/Judeadeniji/zenv-sh">GitHub</a></div>
+        </div>
+        <ul>
+            <li>Engineered an end-to-end zero-knowledge secret management platform utilizing AES-256-GCM and Argon2 encryption.</li>
+            <li>Built a high-throughput, self-hostable Go backend to manage encrypted secrets and team-based RBAC.</li>
+            <li>Developed a native CLI tool for zero-friction CI/CD secret injection, paired with a modern TanStack Start dashboard featuring a custom client-side crypto engine.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <div><h3>go-ytm</h3> <span class="project-tech">| Go, Python, Bubble Tea, FastAPI, SQLite</span></div>
+            <div class="item-meta"><a href="https://github.com/Judeadeniji/go-ytm">GitHub</a></div>
+        </div>
+        <ul>
+            <li>Designed a feature-rich, terminal-based YouTube Music player utilizing a complex hybrid architecture.</li>
+            <li>Built an ultra-fast Go TUI (Terminal User Interface) with Vim-like keybindings, communicating with an isolated Python sidecar for robust YouTube API extraction.</li>
+            <li>Engineered offline caching systems and native Kitty terminal integrations to render high-resolution album art entirely within the terminal.</li>
+        </ul>
+    </div>
+
+    <h2>Education</h2>
+    <p style="color: var(--text-secondary); font-style: italic;">Self-Taught Engineer / Active Open-Source Contributor</p>
+
+</body>
+</html>
