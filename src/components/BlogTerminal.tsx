@@ -58,7 +58,7 @@ export default function BlogTerminal({ posts }: { posts: Post[] }) {
               <a key={post.id} href={`/blog/${post.id}`} className="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
                 <div className="flex items-center gap-2.5 shrink-0">
                   <span className="text-yellow-500/80">★</span>
-                  <span className="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
+                  <span className="group-hover:underline underline-offset-4 decoration-border" style={{ viewTransitionName: `title-${post.id}` }}>{post.data.title}</span>
                 </div>
                 <div className="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
                 <div className="opacity-60 flex items-center gap-2 shrink-0">
@@ -111,7 +111,7 @@ export default function BlogTerminal({ posts }: { posts: Post[] }) {
             <a key={post.id} href={`/blog/${post.id}`} className="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
               <div className="flex items-center gap-2.5 shrink-0">
                 <span className="text-muted-foreground/50">-rw-r--r--</span>
-                <span className="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
+                <span className="group-hover:underline underline-offset-4 decoration-border" style={{ viewTransitionName: `title-${post.id}` }}>{post.data.title}</span>
               </div>
               <div className="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
               <div className="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
