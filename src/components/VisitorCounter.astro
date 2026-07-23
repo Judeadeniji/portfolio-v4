@@ -44,6 +44,8 @@
         countEl.classList.remove('animate-pulse', 'tracking-widest');
       });
   }
-  
+
+  // Run on initial load and after view transitions (if they are re-enabled later)
+  fetchCounter();
   document.addEventListener('astro:page-load', fetchCounter);
 </script>

@@ -180,5 +180,7 @@ const formatDate = (dateStr: string) => new Date(dateStr).toLocaleDateString('en
     });
   }
 
+  // Run on initial load and after view transitions (if they are re-enabled later)
+  setupTerminal();
   document.addEventListener('astro:page-load', setupTerminal);
 </script>
