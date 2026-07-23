@@ -7,7 +7,6 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 
 import { satteri } from '@astrojs/markdown-satteri';
-import { satteriReadingTime } from './src/plugins/satteri-reading-time.js';
 
 import sitemap from '@astrojs/sitemap';
 
@@ -15,10 +14,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://oferanmi.netlify.app/',
   markdown: {
-    processor: satteri({ 
-      features: { smartPunctuation: true },
-      mdastPlugins: [satteriReadingTime]
-    }),
+    processor: satteri({ features: { smartPunctuation: true } }),
   },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),

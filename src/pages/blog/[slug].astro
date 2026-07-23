@@ -1,13 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry, render } from "astro:content";
-import { marked } from "marked";
+import { markdownToHtml } from "satteri";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   posts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 
-  return posts.map((post: any, index: number) => {
+  return posts.map((post, index) => {
     return {
       params: { slug: post.id },
       props: { 
@@ -22,8 +22,12 @@ export async function getStaticPaths() {
 const { post, prevPost, nextPost } = Astro.props;
 const { Content, headings } = await render(post);
 
+const words = post.body ? post.body.trim().split(/\s+/).length : 0;
+const readingTime = Math.max(1, Math.ceil(words / 200));
+
 const profileEntry = await getEntry('profile', 'main');
 const author = profileEntry!.data;
+const { html: authorBio } = markdownToHtml(author.bio)
 ---
 
 <Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`}>
@@ -58,11 +62,13 @@ const author = profileEntry!.data;
           month: 'long',
           day: 'numeric'
         })}</span>
+        <span>{readingTime} min read</span>
       </div>
     </header>
     
+    {/* Mobile TOC */}
     {headings.length > 0 && (
-      <details  class="group mb-12 font-mono text-[13px]">
+      <details class="group lg:hidden mb-12 font-mono text-[13px]">
         <summary class="cursor-pointer text-muted-foreground hover:text-foreground transition-colors list-none flex items-center gap-2 select-none w-max [&::-webkit-details-marker]:hidden">
           <span class="text-green-500 font-bold opacity-80">~</span>
           <span class="text-muted-foreground/50">$</span>
@@ -71,7 +77,7 @@ const author = profileEntry!.data;
         </summary>
         <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2.5 mt-4">
           <div class="text-foreground/40 text-[11px] uppercase tracking-widest mb-1">Table of Contents</div>
-          {headings.filter(h => h.depth <= 3).map(heading => (
+          {headings.filter((h: any) => h.depth <= 3).map((heading: any) => (
             <a href={`#${heading.slug}`} class={`block hover:text-foreground transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}>
               <span class="opacity-50 mr-2">#</span>
               <span class="hover:underline underline-offset-4 decoration-border">{heading.text}</span>
@@ -81,9 +87,33 @@ const author = profileEntry!.data;
       </details>
     )}
     
-    <article class="relative prose prose-zinc dark:prose-invert prose-p:text-[15px] prose-p:leading-relaxed prose-headings:font-medium max-w-none mb-16 custom-prose">
-      <Content />
-    </article>
+    <div class="flex flex-col lg:flex-row gap-12 relative items-start">
+      <div class="lg:w-[70%] xl:w-3/4 min-w-0">
+        <article class="relative prose prose-zinc dark:prose-invert prose-p:text-[15px] prose-p:leading-relaxed prose-headings:font-medium max-w-none mb-16 custom-prose">
+          <Content />
+        </article>
+      </div>
+
+      {/* Desktop Sticky TOC */}
+      {headings.length > 0 && (
+        <aside class="hidden lg:block lg:w-[30%] xl:w-1/4 sticky top-12 font-mono text-[13px] shrink-0 self-start">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-green-500 font-bold opacity-80">~</span>
+            <span class="text-muted-foreground/50">$</span>
+            <span class="text-foreground">./show_toc.sh</span>
+          </div>
+          <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2.5">
+            <div class="text-foreground/40 text-[11px] uppercase tracking-widest mb-2">Table of Contents</div>
+            {headings.filter((h: any) => h.depth <= 3).map((heading: any) => (
+              <a href={`#${heading.slug}`} class={`block hover:text-foreground transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}>
+                <span class="opacity-50 mr-2">#</span>
+                <span class="hover:underline underline-offset-4 decoration-border">{heading.text}</span>
+              </a>
+            ))}
+          </div>
+        </aside>
+      )}
+    </div>
 
     {/* Author Section */}
 <div class="border-t border-border pt-8 mt-12 mb-6 font-mono">
@@ -97,7 +127,7 @@ const author = profileEntry!.data;
     <div>
       <div class="text-[15px] font-medium text-foreground leading-none mb-0.5">{author.name}</div>
       <div class="text-[13px] text-foreground/50 mb-3">Product Engineer</div>
-      <div class="text-[13px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={marked.parse(author.bio)} />
+      <div class="text-[13px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={authorBio} />
       <div class="flex flex-wrap gap-4 text-[13px] text-muted-foreground">
         <a href={`https://x.com/${author.twitterHandle}`} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--twitter</a>
         <a href={author.contact.github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--github</a>
