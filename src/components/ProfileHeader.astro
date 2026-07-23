@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import { marked } from 'marked';
+import { markdownToHtml } from 'satteri';
 
 const profileEntry = await getEntry('profile', 'main');
 const profileData = profileEntry!.data;
@@ -12,7 +12,7 @@ const email = profileData.contact.email;
 const calLink = profileData.contact.cal;
 const twitterHandle = profileData.twitterHandle;
 const twitterUrl = `https://x.com/${twitterHandle}`;
-const bio = profileData.bio;
+const { html: bioHtml } = markdownToHtml(profileData.bio);
 ---
   <header class="mb-16 font-mono text-[13px]" aria-label="Profile Details">
     <div class="space-y-4 mb-8">
@@ -64,7 +64,7 @@ const bio = profileData.bio;
         <span class="text-foreground">cat bio.md</span>
       </div>
       
-      <div class="pl-0 sm:pl-6 text-muted-foreground leading-relaxed prose prose-zinc dark:prose-invert prose-sm prose-p:my-2 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground" set:html={marked.parse(bio)}>
+      <div class="pl-0 sm:pl-6 text-muted-foreground leading-relaxed prose prose-zinc dark:prose-invert prose-sm prose-p:my-2 prose-a:text-foreground prose-a:underline hover:prose-a:text-muted-foreground" set:html={bioHtml}>
       </div>
     </div>
   </header>

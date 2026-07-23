@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 }
 
 export const GET: APIRoute = async ({ props }) => {
-  const { post } = props as { post: any };
+  const { post } = props as { post: CollectionEntry<"blog"> };
   
   const content = `# ${post.data.title}
 
