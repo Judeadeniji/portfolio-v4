@@ -54,7 +54,7 @@ const { html: authorBio } = markdownToHtml(author.bio)
         <span class="text-muted-foreground/50">$</span>
         <span class="text-foreground">cat {post.id}.mdx</span>
       </div>
-      <h1 class="text-2xl font-bold tracking-tight text-foreground mb-4 font-sans" transition:name={`title-${post.id}`}>{post.data.title}</h1>
+      <h1 class="text-2xl font-bold tracking-tight text-foreground mb-4 font-sans">{post.data.title}</h1>
       <div class="text-[13px] text-muted-foreground flex flex-wrap items-center gap-4 opacity-70">
         <span>[{post.data.category}]</span>
         <span>{new Date(post.data.date).toLocaleDateString('en-US', {
