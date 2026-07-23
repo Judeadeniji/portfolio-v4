@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry } from "astro:content";
-import BlogTerminal from "../../components/BlogTerminal.tsx";
+import BlogTerminal from "../../components/BlogTerminal.astro";
 
 const profileEntry = await getEntry('profile', 'main');
 const name = profileEntry!.data.name;
@@ -48,6 +48,6 @@ const schema = {
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <div class="space-y-8 mb-12">
     <div class="text-[10px] font-medium uppercase tracking-widest text-muted-foreground font-mono">Blog</div>
-    <BlogTerminal client:load posts={posts} />
+    <BlogTerminal posts={posts} />
   </div>
 </Layout>

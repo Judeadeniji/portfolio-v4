@@ -1,0 +1,186 @@
+---
+interface Post {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    date: string;
+    category: string;
+    featured: boolean;
+  };
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const categories = ['All', ...Array.from(new Set(posts.map(p => p.data.category)))];
+const featuredPosts = posts.filter(p => p.data.featured);
+
+const formatDate = (dateStr: string) => new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<div class="font-mono text-[13px] text-muted-foreground space-y-10" id="blog-terminal">
+  {/* Interactive Categories */}
+  <div class="space-y-3">
+    <div class="flex items-center gap-2.5">
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="text-muted-foreground/50">$</span>
+      <span class="text-foreground">grep -r "category" ./posts</span>
+    </div>
+    <div class="flex flex-wrap gap-3 pl-8" id="category-filters">
+      {categories.map(cat => (
+        <button 
+          data-category={cat}
+          class={`category-btn hover:text-foreground transition-colors ${cat === 'All' ? 'text-green-500 font-bold active-cat' : 'opacity-70 hover:opacity-100'}`}
+        >
+          [{cat}]
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {/* Featured Posts (Only visible in 'All') */}
+  {featuredPosts.length > 0 && (
+    <div class="space-y-3 featured-section">
+      <div class="flex items-center gap-2.5">
+        <span class="text-green-500 font-bold opacity-80">~</span>
+        <span class="text-muted-foreground/50">$</span>
+        <span class="text-foreground">cat featured.txt</span>
+      </div>
+      <div class="pl-6 space-y-3">
+        {featuredPosts.map(post => (
+          <a href={`/blog/${post.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
+            <div class="flex items-center gap-2.5 shrink-0">
+              <span class="text-yellow-500/80">★</span>
+              <span class="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
+            </div>
+            <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+            <div class="opacity-60 flex items-center gap-2 shrink-0">
+              <span class="text-foreground/40">[{post.data.category}]</span>
+              <span class="truncate max-w-62.5 hidden md:inline-block"># {post.id}.mdx</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* All / Filtered Posts */}
+  <div class="space-y-3">
+    <div class="flex items-center gap-2.5">
+      <span class="text-green-500 font-bold opacity-80">~</span>
+      <span class="text-muted-foreground/50">$</span>
+      <span class="text-foreground" id="ls-command">
+        ls -la blog/
+      </span>
+    </div>
+    <div class="pl-6 space-y-3" id="post-list">
+      <div class="all-only group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 transition-colors">
+        <a href="/blog/categories" class="flex items-center gap-2.5 shrink-0 hover:text-foreground">
+          <span class="text-blue-400 opacity-80">drwxr-xr-x</span>
+          <span class="hover:underline underline-offset-4 decoration-border">categories/</span>
+        </a>
+        <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+        <div class="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
+          <span class="text-foreground/40">[dir]</span>
+          <span class="truncate max-w-62.5 hidden md:inline-block">Browse all categories</span>
+        </div>
+      </div>
+      <div class="all-only group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 transition-colors">
+        <a href="/blog/featured" class="flex items-center gap-2.5 shrink-0 hover:text-foreground">
+          <span class="text-blue-400 opacity-80">drwxr-xr-x</span>
+          <span class="hover:underline underline-offset-4 decoration-border">featured/</span>
+        </a>
+        <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+        <div class="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
+          <span class="text-foreground/40">[dir]</span>
+          <span class="truncate max-w-62.5 hidden md:inline-block">Curated highlights</span>
+        </div>
+      </div>
+      
+      {posts.map(post => (
+        <a href={`/blog/${post.id}`} data-category={post.data.category} class="post-item group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
+          <div class="flex items-center gap-2.5 shrink-0">
+            <span class="text-muted-foreground/50">-rw-r--r--</span>
+            <span class="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
+          </div>
+          <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
+          <div class="opacity-60 flex items-center gap-2 shrink-0 text-[11px]">
+            <span class="text-foreground/40">
+              [{formatDate(post.data.date)}]
+            </span>
+            <span class="truncate max-w-62.5 hidden md:inline-block"># {post.id}.mdx</span>
+          </div>
+        </a>
+      ))}
+      <div id="no-posts" class="opacity-60 pl-2 hidden">total 0</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupTerminal() {
+    const terminal = document.getElementById('blog-terminal');
+    if (!terminal) return;
+
+    const btns = terminal.querySelectorAll('.category-btn');
+    const posts = terminal.querySelectorAll('.post-item');
+    const allOnly = terminal.querySelectorAll('.all-only');
+    const featuredSection = terminal.querySelector('.featured-section');
+    const lsCommand = document.getElementById('ls-command');
+    const noPosts = document.getElementById('no-posts');
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-category');
+        
+        // Update active class
+        btns.forEach(b => {
+          b.classList.remove('text-green-500', 'font-bold', 'active-cat');
+          b.classList.add('opacity-70');
+        });
+        btn.classList.add('text-green-500', 'font-bold', 'active-cat');
+        btn.classList.remove('opacity-70');
+
+        let visibleCount = 0;
+
+        if (cat === 'All') {
+          // Show all
+          if (featuredSection) featuredSection.classList.remove('hidden');
+          allOnly.forEach(el => el.classList.remove('hidden'));
+          posts.forEach(p => {
+            p.classList.remove('hidden');
+            visibleCount++;
+          });
+          if (lsCommand) lsCommand.textContent = 'ls -la blog/';
+        } else {
+          // Filter
+          if (featuredSection) featuredSection.classList.add('hidden');
+          allOnly.forEach(el => el.classList.add('hidden'));
+          posts.forEach(p => {
+            if (p.getAttribute('data-category') === cat) {
+              p.classList.remove('hidden');
+              visibleCount++;
+            } else {
+              p.classList.add('hidden');
+            }
+          });
+          if (lsCommand) lsCommand.textContent = `ls -la --grep="${cat}"`;
+        }
+
+        if (visibleCount === 0) {
+          if (noPosts) noPosts.classList.remove('hidden');
+        } else {
+          if (noPosts) noPosts.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  // Run on initial load and after view transitions (if they are re-enabled later)
+  setupTerminal();
+  document.addEventListener('astro:page-load', setupTerminal);
+</script>
