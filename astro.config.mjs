@@ -21,12 +21,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
-    oxc: {
-      jsx: {
-        runtime: "automatic"
-      }
-    }
+    plugins: [tailwindcss()]
   },
 
   image: {
