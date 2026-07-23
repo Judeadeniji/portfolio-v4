@@ -1,0 +1,18 @@
+{
+  "name": "venndor",
+  "description": "A pragmatic CLI tool designed to cleanly inline Node dependencies directly into a `vendor/` directory in your repository. It acts exactly like standard workspace management but gives you total ownership over the raw source code of the dependencies you pull.",
+  "technologies": [
+    "Go",
+    "Cobra",
+    "Node.js",
+    "AST"
+  ],
+  "repo": "https://github.com/judeadeniji/venndor",
+  "features": [
+    "Intelligent Package Manager Detection (npm, yarn, pnpm, bun)",
+    "Zero Configuration non-destructive integration with package.json workspaces",
+    "Diff & Patch Generation for seamless local hacks and emergency fixes",
+    "Smart Upgrades that intelligently fetch new versions and attempt to re-apply local modifications"
+  ],
+  "order": 5
+}
