@@ -96,7 +96,7 @@ const { html: authorBio } = markdownToHtml(author.bio)
 
       {/* Desktop Sticky TOC */}
       {headings.length > 0 && (
-        <aside class="hidden lg:block lg:w-[30%] xl:w-1/4 sticky top-12 font-mono text-[13px] shrink-0 self-start">
+        <aside class="hidden lg:block lg:w-[30%] xl:w-1/4 sticky top-12 font-mono text-[13px] shrink-0 self-start max-h-[calc(100vh-6rem)] overflow-y-auto pr-4 custom-scrollbar">
           <div class="flex items-center gap-2 mb-4">
             <span class="text-green-500 font-bold opacity-80">~</span>
             <span class="text-muted-foreground/50">$</span>
@@ -180,6 +180,17 @@ const { html: authorBio } = markdownToHtml(author.bio)
   .custom-prose h5 a,
   .custom-prose h6 a {
     text-decoration: none !important;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 4px;
   }
   
   .custom-prose a:hover {
