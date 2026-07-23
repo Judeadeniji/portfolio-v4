@@ -1,0 +1,49 @@
+---
+---
+<strong id="visitor-count" class="text-foreground font-semibold animate-pulse tracking-widest">...</strong>
+
+<script>
+  let fetching = false;
+
+  function fetchCounter() {
+    if (fetching) return;
+    fetching = true;
+    
+    const countEl = document.getElementById('visitor-count');
+    if (!countEl) return;
+
+    if (window.__VISITOR_COUNT) {
+      countEl.textContent = window.__VISITOR_COUNT.toLocaleString();
+      countEl.classList.remove('animate-pulse', 'tracking-widest');
+      return;
+    }
+
+    const namespace = 'iamferanmi';
+    const name = 'portfolio';
+    let endpoint = `https://api.counterapi.dev/v1/${namespace}/${name}/`;
+    
+    if (!localStorage.getItem('visited_portfolio')) {
+      endpoint = `https://api.counterapi.dev/v1/${namespace}/${name}/up/`;
+      localStorage.setItem('visited_portfolio', 'true');
+    }
+
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.count) {
+          const count = data.count + 16736;
+          window.__VISITOR_COUNT = count;
+          countEl.textContent = count.toLocaleString();
+          countEl.classList.remove('animate-pulse', 'tracking-widest');
+        }
+      })
+      .catch(() => {
+        const count = 16737;
+        window.__VISITOR_COUNT = count;
+        countEl.textContent = count.toLocaleString();
+        countEl.classList.remove('animate-pulse', 'tracking-widest');
+      });
+  }
+  
+  document.addEventListener('astro:page-load', fetchCounter);
+</script>

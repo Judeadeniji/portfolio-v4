@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import VisitorCounter from './VisitorCounter';
+import VisitorCounter from './VisitorCounter.astro';
 
 const profileEntry = await getEntry('profile', 'main');
 const profileData = profileEntry!.data;
@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
       </div>
 
       <div class="flex items-center gap-2 opacity-60 pl-6 sm:pl-0">
-        <span>[ Visitors: <VisitorCounter client:only="react" /> ]</span>
+        <span>[ Visitors: <VisitorCounter /> ]</span>
       </div>
     </div>
   </footer>
