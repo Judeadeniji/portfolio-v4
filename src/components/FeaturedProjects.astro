@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { marked } from "marked";
 
 // Load projects from Astro content collections
 const rawProjects = await getCollection("projects");
-const projects = rawProjects.sort((a: any, b: any) => a.data.order - b.data.order).map((p: any) => p.data);
+const projects = rawProjects.sort((a, b) => a.data.order - b.data.order).map(p => p.data);
 ---
 
 <section id="projects" class="mb-16 font-mono text-[13px]">
@@ -17,7 +17,7 @@ const projects = rawProjects.sort((a: any, b: any) => a.data.order - b.data.orde
 
   <div class="pl-0 sm:pl-6 space-y-6">
     {
-      projects.map((project: any) => (
+      projects.map((project: CollectionEntry<"projects">["data"]) => (
         <div class="flex flex-col gap-2">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div class="flex items-center gap-3">
