@@ -8,6 +8,7 @@
   ],
   "repo": "https://github.com/Judeadeniji/servex",
   "features": [
+    "Just-in-Time (JIT) compilation for extreme routing performance",
     "Zero-dependency core architecture",
     "Radix tree routing for high-speed URL matching",
     "Built-in middleware support and response streaming",
