@@ -6,9 +6,7 @@ import react from '@astrojs/react';
 
 import mdx from '@astrojs/mdx';
 
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeSlug from 'rehype-slug';
-import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
 
 import sitemap from '@astrojs/sitemap';
 
@@ -16,12 +14,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://oferanmi.netlify.app/',
   markdown: {
-    processor: unified({
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: ['!no-underline', 'hover:text-muted-foreground', 'transition-colors'] } }]
-      ],
-    }),
+    processor: satteri({ features: { smartPunctuation: true } }),
   },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),
