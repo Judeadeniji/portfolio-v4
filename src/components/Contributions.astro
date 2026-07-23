@@ -78,8 +78,11 @@ const formatDate = (dateStr: string) => {
 
                     return (
                       <div
-                        class={`w-2.5 h-2.5 rounded-[1px] contrib-box cursor-default hover:ring-1 hover:ring-foreground/20 transition-all ${bgClass}`}
+                        class={`w-2.5 h-2.5 rounded-[1px] contrib-box cursor-default hover:ring-1 hover:ring-foreground/20 focus:ring-1 focus:ring-foreground/40 outline-none transition-all ${bgClass}`}
                         data-tooltip={tooltipText}
+                        role="img"
+                        tabindex="0"
+                        aria-label={tooltipText}
                       />
                     );
                   })}
@@ -134,7 +137,7 @@ const formatDate = (dateStr: string) => {
 
   if (tooltip && tooltipText) {
     document.querySelectorAll(".contrib-box").forEach((box) => {
-      box.addEventListener("mouseenter", (e) => {
+      const showTooltip = (e: Event) => {
         const target = e.target as HTMLElement;
         const rect = target.getBoundingClientRect();
 
@@ -144,11 +147,17 @@ const formatDate = (dateStr: string) => {
         tooltip.style.left = rect.left + rect.width / 2 + "px";
         tooltip.style.top = rect.top - 8 + "px";
         tooltip.style.opacity = "1";
-      });
+      };
 
-      box.addEventListener("mouseleave", () => {
+      const hideTooltip = () => {
         tooltip.style.opacity = "0";
-      });
+      };
+
+      box.addEventListener("mouseenter", showTooltip);
+      box.addEventListener("focus", showTooltip);
+
+      box.addEventListener("mouseleave", hideTooltip);
+      box.addEventListener("blur", hideTooltip);
     });
   }
 </script>

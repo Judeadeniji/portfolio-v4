@@ -38,14 +38,21 @@ const schema = {
   "mainEntity": {
     "@type": "Person",
     "name": name,
+    "jobTitle": "Product Engineer",
+    "url": Astro.url.origin,
+    "image": new URL("/og-image.png", Astro.url.origin).href,
+    "sameAs": [
+        "https://github.com/Judeadeniji",
+        "https://www.linkedin.com/in/feranmi-adeniji",
+        "https://x.com/iam_feranmi_"
+    ],
     "hasPart": schemaProjects,
     "worksFor": schemaExperience
   }
 };
 ---
 
-<Layout title={`${name} | Portfolio`} description={description}>
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<Layout title={`${name} | Portfolio`} description={description} schema={schema}>
   <ProfileHeader />
   <Contributions />
   <TechStack />
