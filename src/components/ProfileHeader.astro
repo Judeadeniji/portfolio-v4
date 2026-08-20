@@ -1,5 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatarImg from '../assets/avatar.png';
 
 const profileEntry = await getEntry('profile', 'main');
 const profileData = profileEntry!.data;
@@ -13,9 +15,18 @@ const bio = profileData.bio;
     <span class="text-xs font-mono text-tertiary">{location}</span>
   </div>
 
-  <h1 class="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight leading-snug mb-3">
-    I build and ship full-stack web products from architecture to production.
-  </h1>
+  <div class="flex items-center gap-4 sm:gap-5 mb-3">
+    <Image
+      src={avatarImg}
+      alt="Profile photo"
+      width={80}
+      height={80}
+      class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg border border-border object-cover"
+    />
+    <h1 class="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight leading-snug">
+      I build and ship full-stack web products from architecture to production.
+    </h1>
+  </div>
   <p class="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl">
     {bio}
   </p>

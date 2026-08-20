@@ -7,7 +7,7 @@ description: A booking platform built around multi-role reservations, partial pa
 
 GoLodge is an accommodation platform where hosts can publish listings and users can discover and book stays. The system supports different permissions for hosts, users, and administrators while handling reservation state and partial payments.
 
-The platform needed to feel fast and reliable — bookings are time-sensitive, and any friction in the flow means lost revenue.
+The platform needed to feel fast and reliable  bookings are time-sensitive, and any friction in the flow means lost revenue.
 
 ## What needed to work
 
@@ -37,13 +37,13 @@ Supporting systems:
   Better Auth · Cloudinary · Cloudflare · PostHog · Sanity
 ```
 
-The separation meant the API could evolve independently — new endpoints for messaging, payouts, or KYC wouldn't require touching the frontend codebase. Turso provided edge-replicated SQLite, which kept read latency low for a globally distributed user base.
+The separation meant the API could evolve independently  new endpoints for messaging, payouts, or KYC wouldn't require touching the frontend codebase. Turso provided edge-replicated SQLite, which kept read latency low for a globally distributed user base.
 
 ## Engineering challenges
 
 ### Reservation state management
 
-The booking flow moves through several states: pending, confirmed, checked-in, completed, cancelled. Each state transition has rules — a host can cancel before check-in but not after. A user can cancel within a window but forfeits the deposit outside it.
+The booking flow moves through several states: pending, confirmed, checked-in, completed, cancelled. Each state transition has rules  a host can cancel before check-in but not after. A user can cancel within a window but forfeits the deposit outside it.
 
 The state machine needed to be explicit. Implicit state (derived from timestamps or payment status alone) created bugs during early development. Moving to a declared state model with transition guards made the system predictable and testable.
 
@@ -57,7 +57,7 @@ This introduced several concerns:
 - What notifications fire at each stage?
 - How does cancellation work when partial payment has already been collected?
 
-The payment flow was designed as a two-phase commit — the reservation is held tentatively after the deposit, with a TTL. If the remaining payment doesn't arrive before the deadline, the reservation is released back into availability.
+The payment flow was designed as a two-phase commit  the reservation is held tentatively after the deposit, with a TTL. If the remaining payment doesn't arrive before the deadline, the reservation is released back into availability.
 
 ### Role-based workflows
 
@@ -81,4 +81,4 @@ The resulting system supports the complete reservation workflow from listing cre
 
 ## My role
 
-Backend Developer — responsible for backend architecture, booking workflows, authentication, database integration, and supporting API infrastructure.
+Backend Developer  responsible for backend architecture, booking workflows, authentication, database integration, and supporting API infrastructure.

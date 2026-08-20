@@ -55,7 +55,7 @@ body {
 }
 
 @layer base {
-  /* Accessible focus ring — visible on all interactive elements */
+  /* Accessible focus ring  visible on all interactive elements */
   a:focus-visible,
   button:focus-visible,
   summary:focus-visible,
@@ -86,7 +86,7 @@ body {
   }
 }
 
-/* Article content styling — theme-aware */
+/* Article content styling  theme-aware */
 .article-content p {
   margin-bottom: 1.25rem;
   line-height: 1.75;

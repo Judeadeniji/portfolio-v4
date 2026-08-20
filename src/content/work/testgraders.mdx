@@ -30,7 +30,7 @@ Next.js (Frontend)
   Cloudflare Durable Objects (Real-time)
 ```
 
-Cloudflare's serverless stack was chosen for global edge deployment. D1 provided a familiar SQL interface without managing infrastructure. R2 handled media storage without egress fees — critical for a platform where users upload and stream large audio/video files. Durable Objects managed real-time state for grader assignment queues.
+Cloudflare's serverless stack was chosen for global edge deployment. D1 provided a familiar SQL interface without managing infrastructure. R2 handled media storage without egress fees  critical for a platform where users upload and stream large audio/video files. Durable Objects managed real-time state for grader assignment queues.
 
 ## Engineering challenges
 
@@ -47,7 +47,7 @@ The solution uses a weighted scoring system that considers grader specialization
 
 ### Bidirectional reviews
 
-After grading, both the student and grader rate each other. This creates a quality feedback loop — consistently low-rated graders are flagged, and students with poor submission quality are surfaced.
+After grading, both the student and grader rate each other. This creates a quality feedback loop  consistently low-rated graders are flagged, and students with poor submission quality are surfaced.
 
 The review system needed to prevent gaming: reviews are anonymous during the review period, and neither party can see the other's review until both have submitted (or the window expires).
 
@@ -73,8 +73,8 @@ TanStack Table handled the data layer. Custom UI with Tailwind CSS and shadcn/ui
 
 ## Outcome
 
-The platform supports the complete IELTS practice workflow: submission, grading, feedback, and review — with fair workload distribution and real-time status tracking across all user types.
+The platform supports the complete IELTS practice workflow: submission, grading, feedback, and review  with fair workload distribution and real-time status tracking across all user types.
 
 ## My role
 
-Fullstack Developer — responsible for architecture, grader distribution logic, dashboards, media handling, and deployment infrastructure.
+Fullstack Developer  responsible for architecture, grader distribution logic, dashboards, media handling, and deployment infrastructure.

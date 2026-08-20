@@ -6,6 +6,6 @@
   "location": "Lagos, Nigeria (remote)",
   "description": "A booking platform built around multi-role reservations, partial payments, and host/guest workflows.",
   "stack": ["TypeScript", "Hono", "Turso", "Drizzle ORM", "Cloudinary", "Cloudflare", "Better Auth", "PostHog", "Sanity"],
-  "images": ["golodge/hero.png"],
+  "images": [],
   "url": ""
 }

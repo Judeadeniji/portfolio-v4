@@ -3,6 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
 import Footer from "../../components/Footer.astro";
+import type { RenderResult } from "astro:content";
+import type { MarkdownHeading } from "astro";
 
 export async function getStaticPaths() {
   const experiences = await getCollection("experience");
@@ -24,15 +26,15 @@ const profileEntry = await getEntry("profile", "main");
 const author = profileEntry!.data;
 
 // Render MDX content if available
-let Content: any = null;
-let headings: any[] = [];
+let Content: RenderResult | null = null;
+let headings: MarkdownHeading[] = [];
 if (workEntry) {
   const rendered = await render(workEntry);
   Content = rendered.Content;
   headings = rendered.headings;
 }
 
-const title = `${data.company} — ${data.role}`;
+const title = `${data.company}  ${data.role}`;
 ---
 
 <Layout title={`${title} | ${author.name}`} description={data.description}>
@@ -63,7 +65,7 @@ const title = `${data.company} — ${data.role}`;
           {data.images.map((img: string) => (
             <div class="rounded-lg overflow-hidden border border-border bg-muted">
               <img
-                src={`/images/${img}`}
+                src={`/assets/${img}`}
                 alt={data.company}
                 class="w-full h-auto"
                 loading="lazy"
@@ -88,7 +90,7 @@ const title = `${data.company} — ${data.role}`;
         <ul class="space-y-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
           {data.highlights.map((highlight: string) => (
             <li class="flex gap-3">
-              <span class="text-tertiary mt-1.5 shrink-0">—</span>
+              <span class="text-tertiary mt-1.5 shrink-0"></span>
               <span>{highlight}</span>
             </li>
           ))}
