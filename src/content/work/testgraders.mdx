@@ -1,0 +1,80 @@
+---
+title: Testgraders
+description: A global IELTS practice test grading platform enabling expert feedback on essays and speaking modules.
+---
+
+## Overview
+
+Testgraders is a platform where IELTS candidates submit practice essays and speaking recordings, and qualified graders provide detailed feedback. The system needed to handle media uploads, distribute work fairly among graders, and present results in dense, data-rich dashboards.
+
+## What needed to work
+
+- Essay submission with text editor and file upload
+- Speaking submission with audio/video recording
+- Grader assignment that distributes work equitably
+- Bidirectional review system (grader reviews student, student reviews grader)
+- High-density dashboards for managing hundreds of submissions
+- In-app notifications for status changes
+- Media storage and streaming at scale
+
+## Architecture
+
+```
+Next.js (Frontend)
+       ↓
+   Hono API
+       ↓
+  Cloudflare D1 (Database)
+  Cloudflare R2 (Media Storage)
+  Cloudflare KV (Caching)
+  Cloudflare Durable Objects (Real-time)
+```
+
+Cloudflare's serverless stack was chosen for global edge deployment. D1 provided a familiar SQL interface without managing infrastructure. R2 handled media storage without egress fees — critical for a platform where users upload and stream large audio/video files. Durable Objects managed real-time state for grader assignment queues.
+
+## Engineering challenges
+
+### Grader distribution algorithm
+
+The core problem: distribute submissions to graders fairly while respecting grader availability, specialization, and workload limits.
+
+A naive round-robin approach failed because:
+- Some graders specialize in essays but not speaking
+- Graders have different availability windows
+- Equal distribution doesn't mean fair distribution (some submissions require more time)
+
+The solution uses a weighted scoring system that considers grader specialization match, current workload, and historical completion speed. Submissions are queued and matched to the best-available grader rather than simply the next one in line.
+
+### Bidirectional reviews
+
+After grading, both the student and grader rate each other. This creates a quality feedback loop — consistently low-rated graders are flagged, and students with poor submission quality are surfaced.
+
+The review system needed to prevent gaming: reviews are anonymous during the review period, and neither party can see the other's review until both have submitted (or the window expires).
+
+### High-density dashboards
+
+Graders and administrators need to manage hundreds of submissions simultaneously. The UI required:
+- Sortable, filterable tables with column-level controls
+- Batch actions (assign, approve, reject)
+- Real-time status updates without page refreshes
+- Keyboard navigation for power users
+
+TanStack Table handled the data layer. Custom UI with Tailwind CSS and shadcn/ui provided the visual density without sacrificing readability.
+
+## What I shipped
+
+- Full-stack architecture on Cloudflare's serverless platform
+- Grader and student dashboards with dense data tables
+- In-app notification system
+- Audio/video upload, storage, and streaming
+- Grader distribution algorithm
+- Bidirectional review system
+- CI/CD pipelines for automated deployments
+
+## Outcome
+
+The platform supports the complete IELTS practice workflow: submission, grading, feedback, and review — with fair workload distribution and real-time status tracking across all user types.
+
+## My role
+
+Fullstack Developer — responsible for architecture, grader distribution logic, dashboards, media handling, and deployment infrastructure.

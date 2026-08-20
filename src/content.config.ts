@@ -54,6 +54,17 @@ const experience = defineCollection({
     location: z.string(),
     description: z.string(),
     highlights: z.array(z.string()).optional(),
+    stack: z.array(z.string()).optional(),
+    images: z.array(z.string()).optional(),
+    url: z.string().optional(),
+  }),
+});
+
+const work = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/work" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
   }),
 });
 
@@ -62,4 +73,5 @@ export const collections = {
   projects,
   blog,
   experience,
+  work,
 };

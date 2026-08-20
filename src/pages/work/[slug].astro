@@ -1,25 +1,36 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, getEntry } from "astro:content";
-import { markdownToHtml } from "satteri";
+import { getCollection, getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
 import Footer from "../../components/Footer.astro";
 
 export async function getStaticPaths() {
   const experiences = await getCollection("experience");
-  return experiences.map((exp) => ({
-    params: { slug: exp.id },
-    props: { exp },
-  }));
+  const workEntries = await getCollection("work");
+
+  return experiences.map((exp) => {
+    const workEntry = workEntries.find((w) => w.id === exp.id);
+    return {
+      params: { slug: exp.id },
+      props: { exp, workEntry: workEntry ?? null },
+    };
+  });
 }
 
-const { exp } = Astro.props;
+const { exp, workEntry } = Astro.props;
 const data = exp.data;
 
-const profileEntry = await getEntry('profile', 'main');
+const profileEntry = await getEntry("profile", "main");
 const author = profileEntry!.data;
 
-const descriptionHtml = markdownToHtml(data.description).html;
-const highlightsHtml = data.highlights ? data.highlights.map(h => markdownToHtml(h).html) : [];
+// Render MDX content if available
+let Content: any = null;
+let headings: any[] = [];
+if (workEntry) {
+  const rendered = await render(workEntry);
+  Content = rendered.Content;
+  headings = rendered.headings;
+}
 
 const title = `${data.company} — ${data.role}`;
 ---
@@ -27,7 +38,9 @@ const title = `${data.company} — ${data.role}`;
 <Layout title={`${title} | ${author.name}`} description={data.description}>
   <div class="animate-enter">
     <div class="flex items-center justify-between mb-8">
-      <a href="/#selected-work" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">← Work</a>
+      <a href="/#selected-work" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">
+        ← Work
+      </a>
       <span class="text-sm font-mono text-tertiary">{data.period}</span>
     </div>
 
@@ -35,6 +48,7 @@ const title = `${data.company} — ${data.role}`;
       <h1 class="text-3xl sm:text-4xl font-semibold text-foreground tracking-tight leading-snug mb-2">
         {data.company}
       </h1>
+      <p class="text-base text-muted-foreground mb-3">{data.description}</p>
       <div class="flex items-center gap-3 text-sm font-mono text-tertiary">
         <span>{data.role}</span>
         <span>·</span>
@@ -42,26 +56,68 @@ const title = `${data.company} — ${data.role}`;
       </div>
     </header>
 
-    <div class="article-content text-base sm:text-lg mb-14">
-      <div set:html={descriptionHtml} />
-    </div>
-
-    {highlightsHtml.length > 0 && (
+    {/* Images */}
+    {data.images && data.images.length > 0 && (
       <section class="mb-14">
-        <h2 class="text-xs font-mono text-tertiary uppercase tracking-wider mb-5">What I Built</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {data.images.map((img: string) => (
+            <div class="rounded-lg overflow-hidden border border-border bg-muted">
+              <img
+                src={`/images/${img}`}
+                alt={data.company}
+                class="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* MDX Content */}
+    {Content && (
+      <article class="article-content text-base sm:text-lg mb-14">
+        <Content />
+      </article>
+    )}
+
+    {/* Fallback if no MDX: show highlights */}
+    {!Content && data.highlights && data.highlights.length > 0 && (
+      <section class="mb-14">
+        <h2 class="text-xs font-mono text-tertiary uppercase tracking-wider mb-5">Highlights</h2>
         <ul class="space-y-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-          {highlightsHtml.map((html) => (
+          {data.highlights.map((highlight: string) => (
             <li class="flex gap-3">
               <span class="text-tertiary mt-1.5 shrink-0">—</span>
-              <div class="prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 max-w-none" set:html={html} />
+              <span>{highlight}</span>
             </li>
           ))}
         </ul>
       </section>
     )}
 
-    <div class="flex items-center justify-between text-sm font-mono text-tertiary">
+    {/* Stack */}
+    {data.stack && data.stack.length > 0 && (
+      <section class="mb-14">
+        <h2 class="text-xs font-mono text-tertiary uppercase tracking-wider mb-5">Stack</h2>
+        <div class="flex flex-wrap gap-2">
+          {data.stack.map((tech: string) => (
+            <span class="px-3 py-1.5 text-xs font-mono text-muted-foreground bg-muted border border-border rounded-md">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Links */}
+    <div class="flex items-center justify-between text-sm font-mono text-tertiary pt-6 border-t border-border">
       <a href="/#selected-work" class="text-muted-foreground hover:text-foreground transition">← All work</a>
+      {data.url && (
+        <a href={data.url} target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-foreground transition">
+          Visit site ↗
+        </a>
+      )}
     </div>
   </div>
 

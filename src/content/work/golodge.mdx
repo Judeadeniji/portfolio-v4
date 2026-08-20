@@ -1,0 +1,84 @@
+---
+title: GoLodge
+description: A booking platform built around multi-role reservations, partial payments, and host/guest workflows.
+---
+
+## Overview
+
+GoLodge is an accommodation platform where hosts can publish listings and users can discover and book stays. The system supports different permissions for hosts, users, and administrators while handling reservation state and partial payments.
+
+The platform needed to feel fast and reliable — bookings are time-sensitive, and any friction in the flow means lost revenue.
+
+## What needed to work
+
+- Multiple user roles with distinct capabilities (host, user, admin)
+- Host onboarding and listing management
+- Full reservation lifecycle from search to confirmation
+- Partial payment support (deposit now, pay later)
+- Different booking states with clear transitions
+- Secure authentication and session handling
+- Media management for listing photos
+- Separate host and user experiences
+
+## Architecture
+
+The API was separated from the application layer using Hono, allowing the backend endpoints to remain independently structured while the frontend handled the user-facing application.
+
+```
+Next.js (Frontend)
+       ↓
+   Hono API
+       ↓
+  Drizzle ORM
+       ↓
+     Turso
+
+Supporting systems:
+  Better Auth · Cloudinary · Cloudflare · PostHog · Sanity
+```
+
+The separation meant the API could evolve independently — new endpoints for messaging, payouts, or KYC wouldn't require touching the frontend codebase. Turso provided edge-replicated SQLite, which kept read latency low for a globally distributed user base.
+
+## Engineering challenges
+
+### Reservation state management
+
+The booking flow moves through several states: pending, confirmed, checked-in, completed, cancelled. Each state transition has rules — a host can cancel before check-in but not after. A user can cancel within a window but forfeits the deposit outside it.
+
+The state machine needed to be explicit. Implicit state (derived from timestamps or payment status alone) created bugs during early development. Moving to a declared state model with transition guards made the system predictable and testable.
+
+### Partial payments
+
+GoLodge supports deposit-based booking: the user pays a fraction upfront and the remainder closer to the check-in date.
+
+This introduced several concerns:
+- What happens when the deposit succeeds but the remaining payment fails?
+- How is the reservation represented during the gap between deposit and full payment?
+- What notifications fire at each stage?
+- How does cancellation work when partial payment has already been collected?
+
+The payment flow was designed as a two-phase commit — the reservation is held tentatively after the deposit, with a TTL. If the remaining payment doesn't arrive before the deadline, the reservation is released back into availability.
+
+### Role-based workflows
+
+Hosts, users, and administrators each see different interfaces and have different API permissions. A host manages listings and bookings. A user searches and books. An admin oversees both.
+
+The permission model was implemented at the API layer using middleware. Each route declares which roles can access it, and the auth middleware validates the session token against those requirements. This kept authorization logic out of individual handlers.
+
+## What I shipped
+
+- Booking flow from listing search through reservation and payment
+- Host onboarding, profiles, and listing management (create, update, delete)
+- Collections system for curated listings
+- Authentication with Better Auth and secure cookie handling
+- Blog integration with Sanity and Next.js
+- PostHog analytics for tracking user behavior
+- Cloudflare DDoS protection and privacy-safe API integrations
+
+## Outcome
+
+The resulting system supports the complete reservation workflow from listing creation through booking and payment, with separate experiences for hosts, users, and administrators. The architecture is designed to accommodate upcoming features: messaging, negotiations, payouts, credit system, and KYC verification.
+
+## My role
+
+Backend Developer — responsible for backend architecture, booking workflows, authentication, database integration, and supporting API infrastructure.
