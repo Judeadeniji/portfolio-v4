@@ -1,17 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ProfileHeader from "../components/ProfileHeader.astro";
-import Contributions from "../components/Contributions.astro";
-import TechStack from "../components/TechStack.astro";
-import FeaturedProjects from "../components/FeaturedProjects.astro";
-import Experience from "../components/Experience.astro";
-import RecentPosts from "../components/RecentPosts.astro";
+import SelectedWork from "../components/SelectedWork.astro";
+import Capabilities from "../components/Capabilities.astro";
+import OpenSource from "../components/OpenSource.astro";
+import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
 import { getEntry, getCollection } from "astro:content";
 
 const profileEntry = await getEntry("profile", "main");
 const name = profileEntry!.data.name;
-const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, ''); // Use first sentence of bio
+const description = profileEntry!.data.bio.split('\n')[0].replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '');
 
 const rawProjects = await getCollection("projects");
 const schemaProjects = rawProjects.map(p => ({
@@ -19,17 +19,6 @@ const schemaProjects = rawProjects.map(p => ({
   "name": p.data.name,
   "description": p.data.description,
   "url": p.data.live_url || p.data.repo || Astro.url.origin
-}));
-
-const rawExperience = await getCollection("experience");
-const schemaExperience = rawExperience.map(e => ({
-  "@type": "EmployeeRole",
-  "roleName": e.data.role,
-  "startDate": e.data.period,
-  "worksFor": {
-    "@type": "Organization",
-    "name": e.data.company
-  }
 }));
 
 const schema = {
@@ -46,18 +35,17 @@ const schema = {
         "https://www.linkedin.com/in/feranmi-adeniji",
         "https://x.com/iam_feranmi_"
     ],
-    "hasPart": schemaProjects,
-    "worksFor": schemaExperience
+    "hasPart": schemaProjects
   }
 };
 ---
 
 <Layout title={`${name} | Portfolio`} description={description} schema={schema}>
   <ProfileHeader />
-  <Contributions />
-  <TechStack />
-  <FeaturedProjects />
-  <Experience />
-  <RecentPosts />
+  <SelectedWork />
+  <Capabilities />
+  <OpenSource />
+  <About />
   <Contact />
+  <Footer />
 </Layout>

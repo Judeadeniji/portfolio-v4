@@ -1,7 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry, render } from "astro:content";
-import { markdownToHtml } from "satteri";
+import { Image } from "astro:assets";
+import avatarImg from "../../assets/avatar.png";
+import Footer from "../../components/Footer.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -27,7 +29,12 @@ const readingTime = Math.max(1, Math.ceil(words / 200));
 
 const profileEntry = await getEntry('profile', 'main');
 const author = profileEntry!.data;
-const { html: authorBio } = markdownToHtml(author.bio)
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
 ---
 
 <Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`}>
@@ -43,264 +50,71 @@ const { html: authorBio } = markdownToHtml(author.bio)
       "url": Astro.url.origin
     }
   })} />
-  <div class="mb-12">
-    <a href="/blog" class="font-mono text-[13px] text-muted-foreground hover:text-foreground transition-colors mb-8 inline-flex items-center gap-2">
-      <span class="text-green-500 font-bold opacity-80">~</span> $ cd ..
-    </a>
-    
-    <header class="mb-12 font-mono">
-      <div class="flex items-center gap-2.5 mb-4 text-[13px]">
-        <span class="text-green-500 font-bold opacity-80">~</span>
-        <span class="text-muted-foreground/50">$</span>
-        <span class="text-foreground">cat {post.id}.mdx</span>
-      </div>
-      <h1 class="text-2xl font-bold tracking-tight text-foreground mb-4 font-sans">{post.data.title}</h1>
-      <div class="text-[13px] text-muted-foreground flex flex-wrap items-center gap-4 opacity-70">
-        <span>[{post.data.category}]</span>
-        <span>{new Date(post.data.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}</span>
+
+  <div class="animate-enter">
+    <div class="flex items-center justify-between mb-8">
+      <a href="/blog" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">
+        ← Back
+      </a>
+      <div class="text-sm font-mono text-tertiary">{formatDate(new Date(post.data.date))}</div>
+    </div>
+
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-semibold text-foreground tracking-tight leading-snug mb-3">{post.data.title}</h1>
+      <div class="flex items-center gap-3 text-sm font-mono text-tertiary">
         <span>{readingTime} min read</span>
+        <span>·</span>
+        <span>{post.data.category}</span>
       </div>
     </header>
-    
-    {/* Mobile TOC */}
+
+    {/* Table of Contents */}
     {headings.length > 0 && (
-      <details class="group lg:hidden mb-12 font-mono text-[13px]">
-        <summary class="cursor-pointer text-muted-foreground hover:text-foreground transition-colors list-none flex items-center gap-2 select-none w-max [&::-webkit-details-marker]:hidden">
-          <span class="text-green-500 font-bold opacity-80">~</span>
-          <span class="text-muted-foreground/50">$</span>
-          <span class="underline underline-offset-4 decoration-border transition-colors">./show_toc.sh</span>
-          <span class="text-[9px] opacity-50 transition-transform duration-200 group-open:rotate-180 ml-1">▼</span>
+      <details class="group text-sm text-muted-foreground mb-10">
+        <summary class="font-mono text-xs text-tertiary hover:text-foreground cursor-pointer transition select-none inline-flex items-center gap-1">
+          <span>Table of Contents</span>
+          <span class="group-open:rotate-180 transition-transform text-[9px]">▾</span>
         </summary>
-        <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2.5 mt-4">
-          <div class="text-foreground/40 text-[11px] uppercase tracking-widest mb-1">Table of Contents</div>
+        <div class="mt-2 pl-3 space-y-1.5">
           {headings.filter((h) => h.depth <= 3).map((heading) => (
             <a href={`#${heading.slug}`} class={`block hover:text-foreground transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}>
               <span class="opacity-50 mr-2">#</span>
-              <span class="hover:underline underline-offset-4 decoration-border">{heading.text}</span>
+              <span>{heading.text}</span>
             </a>
           ))}
         </div>
       </details>
     )}
-    
-    <div class="flex flex-col lg:flex-row gap-12 relative items-start">
-      <div class="lg:w-[70%] xl:w-3/4 min-w-0">
-        <article class="relative prose prose-zinc dark:prose-invert prose-p:text-[15px] prose-p:leading-relaxed prose-headings:font-medium max-w-none mb-16 custom-prose">
-          <Content />
-        </article>
-      </div>
 
-      {/* Desktop Sticky TOC */}
-      {headings.length > 0 && (
-        <aside class="hidden lg:block lg:w-[30%] xl:w-1/4 sticky top-12 font-mono text-[13px] shrink-0 self-start max-h-[calc(100vh-6rem)] overflow-y-auto pr-4 custom-scrollbar">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="text-green-500 font-bold opacity-80">~</span>
-            <span class="text-muted-foreground/50">$</span>
-            <span class="text-foreground">./show_toc.sh</span>
-          </div>
-          <div class="text-muted-foreground opacity-80 pl-4 border-l border-border/40 space-y-2.5">
-            <div class="text-foreground/40 text-[11px] uppercase tracking-widest mb-2">Table of Contents</div>
-            {headings.filter((h) => h.depth <= 3).map((heading) => (
-              <a href={`#${heading.slug}`} class={`block hover:text-foreground transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}>
-                <span class="opacity-50 mr-2">#</span>
-                <span class="hover:underline underline-offset-4 decoration-border">{heading.text}</span>
-              </a>
-            ))}
-          </div>
-        </aside>
-      )}
-    </div>
+    {/* Article Content */}
+    <article class="article-content text-base sm:text-lg">
+      <Content />
+    </article>
 
-    {/* Author Section */}
-<div class="border-t border-border pt-8 mt-12 mb-6 font-mono">
-  <div class="flex items-center gap-2.5 mb-4 text-[13px]">
-    <span class="text-green-500 font-bold opacity-80">~</span>
-    <span class="text-muted-foreground/50">$</span>
-    <span class="text-foreground">whoami --author</span>
-  </div>
-  <div class="flex items-start gap-4">
-    <img src={author.avatarUrl} alt={author.name} class="size-14 rounded-md border border-border ring-2 ring-background shadow-sm shrink-0" />
-    <div>
-      <div class="text-[15px] font-medium text-foreground leading-none mb-0.5">{author.name}</div>
-      <div class="text-[13px] text-foreground/50 mb-3">Product Engineer</div>
-      <div class="text-[13px] text-muted-foreground leading-relaxed max-w-lg mb-4 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-muted-foreground" set:html={authorBio} />
-      <div class="flex flex-wrap gap-4 text-[13px] text-muted-foreground">
-        <a href={`https://x.com/${author.twitterHandle}`} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--twitter</a>
-        <a href={author.contact.github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--github</a>
-        <a href={author.contact.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--linkedin</a>
-        <a href={author.contact.cal} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors">--book-call</a>
-        <a href={`mailto:${author.contact.email}`} class="hover:text-foreground transition-colors">--email</a>
+    {/* Author */}
+    <div class="mt-14">
+      <div class="flex items-start gap-4">
+        <Image src={avatarImg} alt={author.name} class="size-11 shrink-0 object-cover" width={44} height={44} loading="lazy" />
+        <div>
+          <div class="text-base font-medium text-foreground mb-0.5">{author.name}</div>
+          <div class="text-sm text-tertiary mb-2">Product Engineer</div>
+          <div class="flex flex-wrap gap-3 text-sm text-muted-foreground">
+            <a href={`https://x.com/${author.twitterHandle}`} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">Twitter</a>
+            <a href={author.contact.github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">GitHub</a>
+            <a href={author.contact.cal} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">Book a Call</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-    {/* Pagination */}
-    <div class="border-t border-border/40 border-dashed pt-8 font-mono text-[13px] space-y-3 lg:flex lg:justify-between lg:items-center">
-      {prevPost && (
-        <a href={`/blog/${prevPost.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-muted-foreground hover:text-foreground transition-colors">
-          <div class="flex items-center gap-2.5">
-            <span class="text-green-500 font-bold opacity-80">~</span>
-            <span class="text-muted-foreground/50">$</span>
-            <span class="group-hover:underline underline-offset-4 decoration-border">./{prevPost.id}.mdx</span>
-          </div>
-          <span class="opacity-40 hidden sm:inline-block"># Previous</span>
-        </a>
-      )}
+    {/* Navigation */}
+    <div class="mt-10 pt-6 flex items-center justify-between text-sm font-mono text-tertiary">
+      <a href="/blog" class="text-muted-foreground hover:text-foreground transition">← Blog</a>
       {nextPost && (
-        <a href={`/blog/${nextPost.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-muted-foreground hover:text-foreground transition-colors">
-          <div class="flex items-center gap-2.5">
-            <span class="text-green-500 font-bold opacity-80">~</span>
-            <span class="text-muted-foreground/50">$</span>
-            <span class="group-hover:underline underline-offset-4 decoration-border">./{nextPost.id}.mdx</span>
-          </div>
-          <span class="opacity-40 hidden sm:inline-block"># Next</span>
-        </a>
+        <a href={`/blog/${nextPost.id}`} class="hover:text-foreground transition">{nextPost.data.title} →</a>
       )}
     </div>
   </div>
+
+  <Footer />
 </Layout>
-
-<style is:global>
-  @reference "../../styles/global.css"
-  .custom-prose a {
-    color: var(--color-foreground);
-    text-underline-offset: 4px;
-    transition: color 150ms ease-in-out;
-  }
-  
-  .custom-prose h1 a,
-  .custom-prose h2 a,
-  .custom-prose h3 a,
-  .custom-prose h4 a,
-  .custom-prose h5 a,
-  .custom-prose h6 a {
-    text-decoration: none !important;
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--color-border);
-    border-radius: 4px;
-  }
-  
-  .custom-prose a:hover {
-    color: var(--color-muted-foreground);
-  }
-
-  /* Terminal Vibes for Article Body */
-  .custom-prose blockquote {
-    border-left: 2px solid #22c55e;
-    background-color: color-mix(in srgb, #22c55e 5%, transparent);
-    padding: 1rem 1.5rem;
-    color: var(--color-muted-foreground);
-    font-style: normal;
-    border-radius: 0 4px 4px 0;
-  }
-  
-  .custom-prose blockquote p::before,
-  .custom-prose blockquote p::after {
-    display: none;
-  }
-  
-  .custom-prose :not(pre) > code {
-    background-color: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-foreground);
-    padding: 0.1em 0.4em;
-    border-radius: 0;
-    font-family: var(--font-mono);
-    font-size: 0.85em;
-  }
-
-  .custom-prose pre {
-    background-color: var(--color-background) !important;
-    border: 1px solid var(--color-border) !important;
-    border-radius: 0 !important;
-    padding: 1.25rem !important;
-    position: relative;
-    margin-top: 2rem !important;
-  }
-
-  .custom-prose pre::before {
-    content: "~ cat example." attr(data-language);
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-background);
-    padding: 0.2rem 0.75rem;
-    color: #22c55e;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: bold;
-    transform: translateY(-100%);
-    z-index: 10;
-  }
-  
-  .custom-prose h2::before,
-  .custom-prose h3::before,
-  .custom-prose h4::before {
-    content: ">_";
-    color: #22c55e;
-    opacity: 0.8;
-    font-family: var(--font-mono);
-    font-weight: bold;
-    margin-right: 8px;
-    font-size: 0.9em;
-  }
-
-  /* Lists as terminal bullet points */
-  .custom-prose ul {
-    list-style-type: none;
-    padding-left: 1.5rem;
-  }
-  
-  .custom-prose ul li {
-    position: relative;
-    @apply text-sm leading-loose
-  }
-  
-  .custom-prose ul li::before {
-    content: "*";
-    color: #22c55e;
-    position: absolute;
-    left: -1.2rem;
-    top: 0.1rem;
-    font-family: var(--font-mono);
-    font-weight: bold;
-    opacity: 0.8;
-  }
-  
-  .custom-prose ol {
-    list-style-type: none;
-    counter-reset: terminal-counter;
-    padding-left: 1.5rem;
-  }
-  
-  .custom-prose ol li {
-    position: relative;
-    counter-increment: terminal-counter;
-    @apply text-sm
-  }
-  
-  .custom-prose ol li::before {
-    content: "[" counter(terminal-counter) "]";
-    color: #a1a1aa;
-    position: absolute;
-    left: -1.8rem;
-    top: 0.1rem;
-    font-family: var(--font-mono);
-    font-size: 0.85em;
-  }
-</style>

@@ -20,8 +20,17 @@ export const GET: APIRoute = async () => {
     }
   }
 
-  // Use Geist font
+  // Use Inter font (matching redesign)
   const fontBuffer = await fetch("https://takumi.kane.tw/fonts/Geist.woff2").then(r => r.arrayBuffer());
+
+  // New dark theme palette from redesign.html
+  const colors = {
+    canvas: '#0A0A0A',
+    border: '#242424',
+    foreground: '#EDEDED',
+    muted: '#888888',
+    tertiary: '#555555',
+  };
 
   const element = React.createElement(
     'div',
@@ -31,14 +40,13 @@ export const GET: APIRoute = async () => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#000000', 
-        color: '#fafafa',
+        backgroundColor: colors.canvas,
+        color: colors.foreground,
         padding: '80px',
         fontFamily: 'Geist',
-        border: '16px solid #18181b', // zinc-900 border
       }
     },
-    // Top Section (Terminal Path & Category)
+    // Top Section (Name & Role)
     React.createElement(
       'div',
       {
@@ -48,40 +56,33 @@ export const GET: APIRoute = async () => {
           justifyContent: 'space-between',
           marginBottom: 'auto',
           fontSize: '28px',
-          fontFamily: 'monospace',
-          opacity: 0.8
+          fontFamily: 'Geist',
         }
       },
-      React.createElement(
-        'div',
-        { style: { display: 'flex', alignItems: 'center', gap: '16px' } },
-        React.createElement('span', { style: { color: '#22c55e', fontWeight: 600 } }, '~'),
-        React.createElement('span', { style: { color: '#a1a1aa' } }, '$'),
-        React.createElement('span', {}, `./portfolio.sh`)
-      ),
-      React.createElement('span', { style: { color: '#a1a1aa' } }, `[Product Engineer]`)
+      React.createElement('span', { style: { fontWeight: 500 } }, author.name),
+      React.createElement('span', { style: { color: colors.tertiary } }, 'Product Engineer')
     ),
-    
-    // Middle Section (Title)
+
+    // Middle Section (Value Proposition)
     React.createElement(
       'div',
       {
         style: {
-          fontSize: '76px',
+          fontSize: '64px',
           fontWeight: 500,
           lineHeight: '1.2',
           letterSpacing: '-0.02em',
-          maxWidth: '1000px',
-          marginTop: '40px',
-          marginBottom: '60px',
+          maxWidth: '900px',
+          marginTop: '60px',
+          marginBottom: '80px',
           display: 'flex',
           flexWrap: 'wrap',
         }
       },
-      author.name
+      'I build and ship full-stack web products from architecture to production.'
     ),
 
-    // Bottom Section (Author Profile & Date)
+    // Bottom Section (Author Profile & Links)
     React.createElement(
       'div',
       {
@@ -91,29 +92,29 @@ export const GET: APIRoute = async () => {
           alignItems: 'center',
           marginTop: 'auto',
           paddingTop: '40px',
-          borderTop: '2px dashed #27272a'
+          borderTop: `1px solid ${colors.border}`
         }
       },
       // Author info
       React.createElement(
         'div',
         { style: { display: 'flex', alignItems: 'center', gap: '24px' } },
-        React.createElement('img', { 
+        React.createElement('img', {
           src: avatarSrc,
-          style: { width: '80px', height: '80px', borderRadius: '10px', border: '2px solid #3f3f46' } 
+          style: { width: '72px', height: '72px', borderRadius: '12px', border: `1px solid ${colors.border}` }
         }),
         React.createElement(
           'div',
           { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
-          React.createElement('span', { style: { fontSize: '28px', fontWeight: 600 } }, author.name),
-          React.createElement('span', { style: { fontSize: '22px', color: '#a1a1aa' } }, author.twitterHandle ? `@${author.twitterHandle}` : 'Product Engineer')
+          React.createElement('span', { style: { fontSize: '26px', fontWeight: 500 } }, author.name),
+          React.createElement('span', { style: { fontSize: '20px', color: colors.muted } }, author.contact.location)
         )
       ),
-      // URL or Git
+      // GitHub URL
       React.createElement(
         'div',
-        { style: { fontSize: '26px', color: '#a1a1aa', fontFamily: 'monospace' } },
-        'github.com/Judeadeniji'
+        { style: { fontSize: '24px', color: colors.tertiary, fontFamily: 'Geist' } },
+        'oferanmi.netlify.app'
       )
     )
   );

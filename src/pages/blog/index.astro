@@ -1,24 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry } from "astro:content";
-import BlogTerminal from "../../components/BlogTerminal.astro";
+import Footer from "../../components/Footer.astro";
 
 const profileEntry = await getEntry('profile', 'main');
 const name = profileEntry!.data.name;
 
 const rawPosts = await getCollection("blog");
 const posts = rawPosts
-  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
-  .map(p => ({
-    id: p.id,
-    data: {
-      title: p.data.title,
-      description: p.data.description,
-      date: new Date(p.data.date).toISOString(),
-      category: p.data.category,
-      featured: p.data.featured,
-    }
-  }));
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 
 const description = `Explore articles, tutorials, and thoughts on software engineering by ${name}.`;
 
@@ -42,12 +32,45 @@ const schema = {
     }))
   }
 };
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const estimateReadTime = (body: string) => {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+};
 ---
 
 <Layout title={`${name} | Blog`} description={description}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <div class="space-y-8 mb-12">
-    <div class="text-[10px] font-medium uppercase tracking-widest text-muted-foreground font-mono">Blog</div>
-    <BlogTerminal posts={posts} />
+  
+  <div class="animate-enter">
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-2">
+        <h1 class="text-2xl font-semibold text-foreground tracking-tight">Writings & Notes</h1>
+        <a href="/" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">← Work</a>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        Essays on web architecture, infrastructure models, and software engineering practices.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {posts.map(post => (
+        <a href={`/blog/${post.id}`} class="block">
+          <div class="flex items-baseline justify-between gap-4 mb-1">
+            <h2 class="text-base font-medium text-foreground">{post.data.title}</h2>
+            <span class="text-xs font-mono text-tertiary shrink-0">{formatDate(new Date(post.data.date))}</span>
+          </div>
+          <p class="text-sm text-muted-foreground leading-relaxed mb-1">{post.data.description}</p>
+          <div class="text-xs font-mono text-tertiary flex items-center gap-2">
+            <span>{estimateReadTime(post.body || '')} min read</span>
+            <span>·</span>
+            <span>{post.data.category}</span>
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
+
+  <Footer />
 </Layout>

@@ -1,8 +1,6 @@
 ---
 import "../styles/global.css";
-import CustomCursor from "../components/CustomCursor.astro";
-import GlobalTerminal from "../components/GlobalTerminal.tsx";
-import Footer from "@/components/Footer.astro";
+import Header from "../components/Header.astro";
 
 interface Props {
     title: string;
@@ -13,7 +11,7 @@ interface Props {
 
 const { 
     title, 
-    description = "Jude Adeniji - Product Engineer building interactive web applications.",
+    description = "I build and ship full-stack web products from architecture to production.",
     image = "/og.png",
     schema
 } = Astro.props;
@@ -42,11 +40,12 @@ const finalSchema = schema || defaultSchema;
     <head>
         <meta charset="UTF-8" />
         <meta name="description" content={description} />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="canonical" href={canonicalURL} />
         <meta name="generator" content={Astro.generator} />
         <meta name="google-site-verification" content="T-4rFKnZQGBoANf2eim4xp3di2mWXE71OcLGbtBr8pE" />
+        <meta name="robots" content="index, follow" />
         
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
@@ -61,72 +60,66 @@ const finalSchema = schema || defaultSchema;
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={new URL(image, canonicalURL)} />
-        <meta name="robots" content="index, follow" />
+        
         <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
+        
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
             rel="stylesheet"
         />
         <title>{title}</title>
+        
+        <!-- Prevent FOUC: apply theme before paint -->
+        <script is:inline>
+            (function() {
+                const stored = localStorage.getItem('theme');
+                if (stored === 'dark' || stored === 'light') {
+                    document.documentElement.classList.toggle('dark', stored === 'dark');
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+        </script>
     </head>
-    <body
-        class="bg-background text-foreground font-sans min-h-screen flex flex-col antialiased relative selection:bg-foreground selection:text-background"
-    >
-        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-100 bg-background border border-border px-4 py-2 text-sm font-mono text-foreground font-medium rounded-md">
+    <body class="bg-canvas text-foreground min-h-screen selection:bg-foreground selection:text-canvas flex flex-col items-center antialiased">
+        <!-- Skip to content -->
+        <a 
+            href="#main-content" 
+            class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:bg-foreground focus:text-canvas focus:px-4 focus:py-2 focus:text-sm focus:font-mono focus:rounded"
+        >
             Skip to content
         </a>
-        
-        <CustomCursor />
-        {/* Navbar */}
-        <nav class="fixed top-0 left-0 right-0 z-50">
-            <div
-                class="pointer-events-none absolute inset-x-0 top-0 h-10 bg-background mask-[linear-gradient(to_bottom,black_80%,transparent)]"
-            >
-            </div>
-            <div class="relative w-full max-w-4xl mx-auto pl-4 pr-0 sm:px-6 lg:px-0">
-                <div class="flex items-center justify-between h-7 sm:h-8">
-                    <div class="flex items-center gap-3 sm:gap-5 text-[12px] sm:text-[13px] font-mono text-muted-foreground overflow-x-auto no-scrollbar py-2 w-full mask-[linear-gradient(to_right,black_85%,transparent)] sm:mask-none">
-                        <div class="items-center gap-2.5 shrink-0 hidden sm:flex">
-                          <span class="text-green-500 font-bold opacity-80">~</span>
-                          <span class="opacity-50">$</span>
-                        </div>
-                        <a
-                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
-                            href="/">cd /home</a
-                        >
-                        <a
-                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
-                            href="/blog">cd /blog</a
-                        >
-                        <a
-                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
-                            href="/#projects">./projects</a
-                        >
-                        <a
-                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors"
-                            href="/#experience">./experience</a
-                        >
-                        <a
-                            class="shrink-0 hover:text-foreground hover:underline underline-offset-4 decoration-border transition-colors pr-8 sm:pr-0"
-                            href="/#contact">./contact</a
-                        >
-                    </div>
-                </div>
-            </div>
-        </nav>
 
-        <main
-            id="main-content"
-            class="relative z-10 w-full max-w-5xl mx-auto px-6 lg:px-0 pt-18 sm:pt-28 pb-16 grow outline-none"
-            tabindex="-1"
-        >
-            <slot />
-            <Footer />
-        </main>
-        
-        <GlobalTerminal client:load />
+        <div class="w-full max-w-5xl px-4 sm:px-6 pt-8 pb-12 flex flex-col gap-12 min-h-screen">
+            <Header />
+            <main id="main-content" class="flex-1 flex flex-col gap-12" tabindex="-1">
+                <slot />
+            </main>
+        </div>
+
+        <!-- Theme toggle script -->
+        <script is:inline>
+            function getTheme() {
+                const stored = localStorage.getItem('theme');
+                if (stored) return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            function setTheme(theme) {
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                localStorage.setItem('theme', theme);
+                const btn = document.getElementById('theme-toggle');
+                if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+            }
+
+            // Listen for system preference changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        </script>
     </body>
 </html>

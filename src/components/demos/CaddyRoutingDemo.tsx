@@ -77,7 +77,7 @@ export default function CaddyRoutingDemo() {
                {requests.filter(req => req.host === r.host && req.active).map(req => (
                   <motion.div 
                     key={req.id}
-                    className="absolute -bottom-6 left-1/2 w-[2px] h-[4px] bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"
+                    className="absolute -bottom-6 left-1/2 w-0.5 h-1 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"
                     initial={{ top: '100%' }}
                     animate={{ top: '300%' }}
                     transition={{ duration: 0.5, ease: "linear" }}
@@ -115,7 +115,7 @@ export default function CaddyRoutingDemo() {
       </div>
 
       {/* Logs */}
-      <div className="border border-border bg-background p-4 flex flex-col gap-1 min-h-[140px]">
+      <div className="border border-border bg-background p-4 flex flex-col gap-1 min-h-35">
         {logs.map((log, i) => (
           <motion.div 
             key={i} 

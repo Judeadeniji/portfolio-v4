@@ -1,0 +1,45 @@
+---
+import { getEntry } from 'astro:content';
+
+const profileEntry = await getEntry('profile', 'main');
+const github = profileEntry!.data.contact.github;
+---
+
+<section>
+  <div class="flex items-center justify-between text-xs font-mono text-tertiary uppercase tracking-wider mb-6">
+    <span>Open Source</span>
+    <span>Tooling & SDKs</span>
+  </div>
+
+  <div class="space-y-5">
+    <a href={github} target="_blank" rel="noopener noreferrer" class="block">
+      <div class="flex items-baseline justify-between gap-4 mb-1">
+        <h3 class="text-sm font-medium text-foreground">zenv</h3>
+        <span class="text-xs font-mono text-tertiary">Go / TypeScript</span>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        Zero-knowledge secret management infrastructure with client-side encryption and CLI.
+      </p>
+    </a>
+
+    <a href={github} target="_blank" rel="noopener noreferrer" class="block">
+      <div class="flex items-baseline justify-between gap-4 mb-1">
+        <h3 class="text-sm font-medium text-foreground">paystack-sdk-(edge)</h3>
+        <span class="text-xs font-mono text-tertiary">TypeScript / Edge</span>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        Zero-dependency Paystack SDK tailored for Cloudflare Workers, Bun, and serverless runtimes.
+      </p>
+    </a>
+
+    <a href={github} target="_blank" rel="noopener noreferrer" class="block">
+      <div class="flex items-baseline justify-between gap-4 mb-1">
+        <h3 class="text-sm font-medium text-foreground">servex</h3>
+        <span class="text-xs font-mono text-tertiary">TypeScript / Bun</span>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        High-performance HTTP server framework built from scratch in TypeScript.
+      </p>
+    </a>
+  </div>
+</section>

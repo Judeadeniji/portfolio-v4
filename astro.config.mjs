@@ -14,7 +14,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://oferanmi.netlify.app/',
   markdown: {
-    processor: satteri({ features: { smartPunctuation: true } }),
+    processor: satteri({ 
+      features: { smartPunctuation: true, headingAttributes: true },
+    }),
   },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),

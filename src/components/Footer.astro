@@ -1,27 +1,23 @@
 ---
 import { getEntry } from 'astro:content';
-import VisitorCounter from './VisitorCounter.astro';
 
 const profileEntry = await getEntry('profile', 'main');
 const profileData = profileEntry!.data;
 const name = profileData.name;
+const email = profileData.contact.email;
+const twitterHandle = profileData.twitterHandle;
+const github = profileData.contact.github;
+const twitterUrl = `https://x.com/${twitterHandle}`;
 const currentYear = new Date().getFullYear();
 ---
-  <footer class="mt-8 mb-4 font-mono text-[12px] sm:text-[13px] text-muted-foreground">
-    <div class="border-t border-border/30 border-dashed pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div class="flex flex-col items-start gap-1">
-        <div class="flex items-center gap-2">
-          <span class="text-green-500 font-bold opacity-80">~</span>
-          <span class="text-muted-foreground/50">$</span>
-          <span>exit</span>
-        </div>
-        <div class="opacity-60 pl-6">
-          Session ended. © {currentYear} <span class="text-foreground">{name}</span>.
-        </div>
-      </div>
 
-      <div class="flex items-center gap-2 opacity-60 pl-6 sm:pl-0">
-        <span>[ Visitors: <VisitorCounter /> ]</span>
-      </div>
+<footer class="text-sm font-mono text-tertiary pt-8">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <span>© {currentYear} {name}</span>
+    <div class="flex items-center gap-4">
+      <a href={twitterUrl} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">Twitter</a>
+      <a href={github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">GitHub</a>
+      <a href={`mailto:${email}`} class="hover:text-foreground transition">{email}</a>
     </div>
-  </footer>
+  </div>
+</footer>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from "astro:content";
+import Footer from '../../components/Footer.astro';
 
 const posts = await getCollection("blog");
 const featuredPosts = posts.filter(p => p.data.featured);
@@ -26,30 +27,32 @@ const schema = {
   }
 };
 ---
+
 <Layout title="Featured Posts | Blog" description="Curated highlights and featured software engineering articles.">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <div class="font-mono text-[13px] text-muted-foreground space-y-10">
-    <div class="space-y-3">
-      <div class="flex items-center gap-2.5 mb-8">
-        <span class="text-green-500 font-bold opacity-80">~</span>
-        <span class="text-muted-foreground/50">$</span>
-        <span class="text-foreground">ls -la ./featured</span>
+  
+  <div class="animate-enter">
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-2">
+        <h1 class="text-2xl font-semibold text-foreground tracking-tight">Featured Posts</h1>
+        <a href="/blog" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">← Back</a>
       </div>
-      <div class="pl-6 space-y-4">
-        {featuredPosts.map(post => (
-          <a href={`/blog/${post.id}`} class="group flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 hover:text-foreground transition-colors">
-            <div class="flex items-center gap-2.5 shrink-0">
-              <span class="text-yellow-500/80">★</span>
-              <span class="group-hover:underline underline-offset-4 decoration-border">{post.data.title}</span>
-            </div>
-            <div class="hidden sm:block border-b border-border/40 grow border-dashed mt-1"></div>
-            <div class="opacity-60 flex items-center gap-2 shrink-0">
-              <span class="text-foreground/40">[{post.data.category}]</span>
-              <span class="truncate max-w-62.5 hidden md:inline-block"># {post.id}.mdx</span>
-            </div>
-          </a>
-        ))}
-      </div>
+      <p class="text-sm text-muted-foreground">Curated highlights and featured software engineering articles.</p>
+    </div>
+
+    <div class="space-y-6">
+      {featuredPosts.map(post => (
+        <a href={`/blog/${post.id}`} class="block">
+          <div class="flex items-baseline justify-between gap-4 mb-1">
+            <h2 class="text-base font-medium text-foreground">{post.data.title}</h2>
+            <span class="text-xs font-mono text-tertiary shrink-0">{new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+          <p class="text-sm text-muted-foreground leading-relaxed mb-1">{post.data.description}</p>
+          <div class="text-xs font-mono text-tertiary">{post.data.category}</div>
+        </a>
+      ))}
     </div>
   </div>
+
+  <Footer />
 </Layout>
