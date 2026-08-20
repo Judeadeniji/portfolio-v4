@@ -48,7 +48,7 @@ const isBlog = pathname.startsWith('/blog');
   {/* Desktop nav */}
   <nav class="hidden md:flex items-center gap-5 text-sm font-mono text-muted-foreground" aria-label="Main navigation">
     <a href="/" class:list={["hover:text-foreground transition", isHome && "text-foreground"]}>Work</a>
-    <a href="/#capabilities" class="hover:text-foreground transition">Capabilities</a>
+    <a href="/#capabilities" class="hover:text-foreground transition">What I build</a>
     <a href="/blog" class:list={["hover:text-foreground transition", isBlog && "text-foreground"]}>Blog</a>
     <a href={github} target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition">GitHub</a>
     <a href="/#contact" class="hover:text-foreground transition">Contact</a>
@@ -105,7 +105,7 @@ const isBlog = pathname.startsWith('/blog');
     <nav class="flex flex-col items-center justify-center h-full gap-8 text-lg font-mono text-muted-foreground">
       <span class="menu-link text-lg font-medium tracking-tight text-foreground">{name}</span>
       <a href="/" class:list={["menu-link hover:text-foreground transition", isHome && "text-foreground"]}>Work</a>
-      <a href="/#capabilities" class="menu-link hover:text-foreground transition">Capabilities</a>
+      <a href="/#capabilities" class="menu-link hover:text-foreground transition">What I build</a>
       <a href="/blog" class:list={["menu-link hover:text-foreground transition", isBlog && "text-foreground"]}>Blog</a>
       <a href={github} target="_blank" rel="noopener noreferrer" class="menu-link hover:text-foreground transition">GitHub</a>
       <a href="/#contact" class="menu-link hover:text-foreground transition">Contact</a>
