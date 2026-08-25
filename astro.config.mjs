@@ -17,6 +17,12 @@ export default defineConfig({
     processor: satteri({ 
       features: { smartPunctuation: true, headingAttributes: true },
     }),
+    shikiConfig: {
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      }
+    }
   },
   server: {
       port: Number.parseInt(process.env.PORT ?? '4321'),

@@ -1,0 +1,19 @@
+{
+  "name": "Saskatoon Roofing Co.",
+  "description": "A conversion-focused website concept for a Saskatoon roofing company, designed to build trust, clearly communicate services, and turn local website visitors into qualified estimate requests.",
+  "technologies": [
+    "SvelteKit",
+    "Tailwind CSS",
+    "TypeScript"
+  ],
+  "live_url": "https://sk-roofing.netlify.app/",
+  "features": [
+    "Conversion-focused landing page designed for local roofing customers",
+    "Streamlined estimate request and lead capture experience",
+    "Clear service presentation with transparent pricing",
+    "Responsive, high-performance experience across devices",
+    "SEO-friendly structure built to improve local discoverability",
+    "Trust-focused sections designed to reduce friction before contacting the business"
+  ],
+  "order": -1
+}

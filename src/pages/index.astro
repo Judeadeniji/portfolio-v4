@@ -7,6 +7,7 @@ import OpenSource from "../components/OpenSource.astro";
 import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+import BlogHighlight from "../components/BlogHighlight.astro";
 import { getEntry, getCollection } from "astro:content";
 
 const profileEntry = await getEntry("profile", "main");
@@ -42,10 +43,11 @@ const schema = {
 
 <Layout title={`${name} | Portfolio`} description={description} schema={schema}>
   <ProfileHeader />
-  <SelectedWork />
-  <Capabilities />
-  <OpenSource />
   <About />
+  <Capabilities />
+  <SelectedWork />
+  <BlogHighlight />
+  <OpenSource />
   <Contact />
   <Footer />
 </Layout>

@@ -9,6 +9,7 @@ const projects = rawExperience.sort((a, b) => a.data.order - b.data.order).map(e
   period: e.data.period,
   role: e.data.role,
   description: markdownToHtml(e.data.description).html,
+  url: e.data.url,
 }));
 ---
 
@@ -19,7 +20,7 @@ const projects = rawExperience.sort((a, b) => a.data.order - b.data.order).map(e
 
   <div class="space-y-8">
     {projects.map((project) => (
-      <a href={`/work/${project.slug}`} class="block group">
+      <div class="block group">
         <div class="flex items-baseline justify-between gap-4 mb-1">
           <h2 class="text-base font-medium text-foreground">
             <span>{project.name}</span>
@@ -28,11 +29,16 @@ const projects = rawExperience.sort((a, b) => a.data.order - b.data.order).map(e
           <span class="text-xs font-mono text-tertiary shrink-0">{project.period}</span>
         </div>
 
-        <div class="text-sm text-muted-foreground leading-relaxed mb-2 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 max-w-none group-hover:text-foreground transition-colors" set:html={project.description}>
+        <div class="text-sm text-muted-foreground leading-relaxed mb-3 prose prose-zinc dark:prose-invert prose-sm prose-p:my-0 max-w-none transition-colors" set:html={project.description}>
         </div>
 
-        <span class="text-xs font-mono text-tertiary group-hover:text-foreground transition-colors">Read case study →</span>
-      </a>
+        <div class="flex items-center gap-4">
+          <a href={`/work/${project.slug}`} class="text-xs font-mono text-tertiary hover:text-foreground transition-colors">Read case study →</a>
+          {project.url && (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-tertiary hover:text-foreground transition-colors">Visit live site ↗</a>
+          )}
+        </div>
+      </div>
     ))}
   </div>
 </section>

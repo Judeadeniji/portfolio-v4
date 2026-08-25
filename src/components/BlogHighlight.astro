@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+
+const rawPosts = await getCollection("blog");
+const featuredPosts = rawPosts
+  .filter(p => p.data.featured)
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+const latestFeatured = featuredPosts[0];
+
+if (!latestFeatured) return null;
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const estimateReadTime = (body: string) => {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+};
+---
+
+<section id="blog">
+  <div class="flex items-center justify-between text-xs font-mono text-tertiary uppercase tracking-wider mb-6">
+    <span>From the Blog</span>
+    <a href="/blog" class="hover:text-foreground transition-colors">View all →</a>
+  </div>
+
+  <a href={`/blog/${latestFeatured.id}`} class="block group">
+    <div class="flex items-baseline justify-between gap-4 mb-1">
+      <h2 class="text-base font-medium text-foreground">{latestFeatured.data.title}</h2>
+      <span class="text-xs font-mono text-tertiary shrink-0">{formatDate(new Date(latestFeatured.data.date))}</span>
+    </div>
+
+    <p class="text-sm text-muted-foreground leading-relaxed mb-3">{latestFeatured.data.description}</p>
+
+    <div class="flex items-center gap-4">
+      <span class="text-xs font-mono text-tertiary group-hover:text-foreground transition-colors">Read article →</span>
+      <span class="text-xs font-mono text-tertiary">{estimateReadTime(latestFeatured.body || '')} min read</span>
+      <span class="text-xs font-mono text-tertiary">·</span>
+      <span class="text-xs font-mono text-tertiary">{latestFeatured.data.category}</span>
+    </div>
+  </a>
+</section>

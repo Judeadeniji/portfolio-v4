@@ -1,0 +1,378 @@
+---
+title: Why I Built Contractor Growth System
+description: Most contractor websites are just digital brochures from 2014. I built this concept project to demonstrate what happens when you treat a home service business like a premium, high-converting digital product.
+date: 2026-08-12
+category: Engineering
+featured: true
+---
+
+<p class="text-xl text-foreground font-medium mb-12">If you're reading this, you aren't actually looking for a roof in Saskatoon. You're looking at my portfolio. I built this concept project, Saskatoon Roofing Co., to solve a massive problem I see in the home service industry every single day.</p>
+
+A business website shouldn't exist just to look good.
+
+It should help the business do something.
+
+It should help a potential customer understand what the business offers, make it easier for them to take the next step, and ultimately help the business turn that interest into an actual opportunity.
+
+That idea is what led me to build **Contractor Growth System**.
+
+This is a self-initiated concept project built around a simple question:
+
+> **What if a contractor's website could do more than collect contact information?**
+
+## The problem
+
+Consider a homeowner who needs a new roof.
+
+They search for a local roofing company, visit a website, look through the services, and decide they're interested.
+
+The website says:
+
+**"Get in touch."**
+
+They click the button and are presented with a form:
+
+- Name
+- Email
+- Phone
+- Message
+
+They submit:
+
+> "Hi, I need a quote for my roof."
+
+The contractor receives the message.
+
+But the work has only just started.
+
+Someone now has to contact the homeowner and ask:
+
+What type of project is it?
+Where is the property?
+How large is the roof?
+When do you want the work done?
+What does the existing roof look like?
+Do you have pictures?
+What kind of materials are you considering?
+What is the approximate scope?
+
+The customer may have to send this information through several messages or phone calls before the contractor has enough context to even determine what happens next.
+
+For a busy service business, this can create unnecessary friction.
+
+And that's the problem I wanted to explore.
+
+## The idea
+
+Instead of treating the website and the business's internal processes as completely separate things, I wanted to connect them.
+
+The customer-facing side of the platform is designed around a guided project request.
+
+Rather than asking someone to write a long message into a generic contact form, the system walks them through a few focused steps.
+
+They can select the service they need, provide information about the property, describe the project, indicate their preferred timeline, upload relevant photos, and provide their contact information.
+
+The result isn't simply a new email sitting in someone's inbox.
+
+It becomes a **structured lead**.
+
+That lead can then enter the contractor's workflow.
+
+And that is where the second part of the platform comes in.
+
+## From website visitor to qualified opportunity
+
+Once a request is submitted, the contractor can access it from a central dashboard.
+
+Instead of having customer information scattered across emails, WhatsApp conversations, spreadsheets, and notes, the relevant information is brought together.
+
+A contractor can see:
+
+**Who is the customer?**
+**What service do they need?**
+**Where is the project?**
+**What is the approximate scope?**
+**When do they want to start?**
+**What photos or documents did they provide?**
+**What has happened with the lead so far?**
+
+That makes the website more than a marketing asset.
+
+It becomes the beginning of an operational workflow.
+
+The lead can then move through stages such as:
+
+**New → Contacted → Qualified → Estimate Sent → Won/Lost**
+
+The purpose isn't to create a complicated CRM.
+
+It's to give a business a clear view of what needs attention.
+
+## Why I focused on the workflow
+
+When building personal projects, it's easy to start with a list of technologies.
+
+"Let me build something with React."
+"Let me create a REST API."
+"Let me use PostgreSQL."
+"Let me build a dashboard."
+
+Those are useful exercises, but they aren't necessarily products.
+
+For this project, I wanted to approach things differently.
+
+I started with the business workflow.
+
+What happens when someone discovers the company?
+What information does the business need from them?
+What happens when that information arrives?
+Who needs to see it?
+What decisions need to be made?
+What happens after the lead is qualified?
+What happens when the contractor sends an estimate?
+What happens when the customer accepts it?
+
+Once I understood that workflow, the features became much easier to define.
+
+## The estimate workflow
+
+One part of the project I particularly wanted to explore was what happens after a lead has been qualified.
+
+A contractor shouldn't have to start from scratch every time they want to prepare an estimate.
+
+The platform allows the contractor to create an estimate directly from the lead.
+
+They can add items such as:
+
+- Materials
+- Labor
+- Removal
+- Disposal
+- Additional repairs
+- Other project costs
+
+The system calculates the subtotal, applicable tax, and total.
+
+The contractor can then send the estimate to the customer.
+
+The customer receives a dedicated estimate page where they can review the project details, pricing, scope of work, and terms.
+
+From there, they can approve the estimate.
+
+That approval then becomes part of the lead's history.
+
+So instead of building isolated features, the system connects them:
+
+**Lead → Estimate → Customer Review → Approval**
+
+That connection is what makes the application useful.
+
+## Designing for the customer
+
+There is another side to this that is easy to overlook.
+
+The contractor needs useful information, but the customer shouldn't feel like they're filling out a government application just to request a quote.
+
+That's why I designed the estimate request as a guided experience.
+
+Instead of putting every field on one page, the information is broken into smaller steps.
+
+For example:
+
+### Step 1
+**What can we help you with?**
+Roof replacement
+Roof repair
+Inspection
+Other
+
+### Step 2
+**Tell us about the property.**
+Residential
+Commercial
+Other
+
+### Step 3
+**When are you looking to get started?**
+As soon as possible
+Within 30 days
+1-3 months
+Just researching
+
+### Step 4
+**Have photos of the project?**
+Upload them here.
+
+### Step 5
+**How can we reach you?**
+Name
+Phone
+Email
+Address
+
+The customer gets a simple experience.
+
+The contractor gets much better information.
+
+That's the trade-off I wanted the design to achieve.
+
+## Designing for the business
+
+The contractor dashboard is intentionally different.
+
+The customer-facing experience is focused on **reducing friction**.
+
+The contractor experience is focused on **clarity and action**.
+
+When the contractor logs in, they should immediately understand what's happening.
+
+For example:
+
+**12 New Leads**
+**18 Contacted**
+**7 Estimates Sent**
+**4 Won**
+**$184,500 Estimated Pipeline**
+
+Then they can move directly into the leads that need attention.
+
+The lead detail page brings together the customer's information, project details, uploaded photos, notes, activity history, and estimate information.
+
+The goal is simple:
+
+**Less searching. More action.**
+
+## The technical challenge
+
+Although the project is designed around a straightforward business problem, there is quite a lot happening underneath it.
+
+A single customer request can involve:
+
+**Customer**
+↓
+**Lead**
+↓
+**Attachments**
+↓
+**Notes**
+↓
+**Activity**
+↓
+**Estimate**
+↓
+**Estimate Items**
+↓
+**Customer Approval**
+
+That means the application needs a database structure that reflects the relationships between these entities.
+
+It also needs to handle authentication, authorization, validation, file uploads, API requests, calculations, notifications, and different states throughout the workflow.
+
+For example, a customer should not be able to access another customer's estimate simply because they know an ID.
+
+A contractor employee shouldn't automatically have access to every administrative operation.
+
+A lead shouldn't be allowed to jump into an invalid state.
+
+An estimate shouldn't calculate its total based purely on values that the browser sends.
+
+These are the kinds of details that aren't necessarily visible in a screenshot, but they matter when building software intended to support a real business.
+
+## Why I made it a concept project
+
+Contractor Growth System is a **self-initiated concept project**.
+
+It wasn't commissioned by a specific contractor, and the businesses, customers, numbers, and data used in the demonstration are fictional.
+
+I wanted to be clear about that because the purpose of the project isn't to pretend that I have already deployed this exact system for a roofing company.
+
+The purpose is to demonstrate how I approach a problem that a real business could have.
+
+I took a realistic business scenario and worked through it from:
+
+**Problem → Requirements → User experience → Data model → API → Application → Workflow**
+
+That is the part of development I wanted this project to demonstrate.
+
+## What I learned from building it
+
+One of the biggest things this project reinforced for me is that software development isn't just about implementing features.
+
+It's about making decisions.
+
+For example, I could have made the estimate request a single long form.
+
+It would have been technically simpler.
+
+But it would have created a worse experience for the person submitting it.
+
+I could have built the dashboard as a collection of tables.
+
+That would have been easy to implement.
+
+But a contractor doesn't necessarily need more tables. They need to know what requires attention.
+
+I could have treated estimates as a completely separate feature.
+
+Instead, I connected them directly to leads because that reflects how the business actually works.
+
+Those decisions are just as important as the code.
+
+## What I would build next
+
+If this were being developed for an actual contractor, there are several areas I would consider extending.
+
+The next stage could include:
+
+- Appointment scheduling
+- Automated follow-ups
+- SMS notifications
+- Customer accounts
+- Job management
+- Invoicing
+- Payment processing
+- Google review integration
+- Lead source tracking
+- More advanced reporting
+- Employee scheduling
+
+But I deliberately didn't include all of these in the initial concept.
+
+A good product doesn't need every possible feature.
+
+It needs to solve its core problem well.
+
+For this project, that core problem is connecting **customer acquisition with the contractor's sales workflow.**
+
+## Why this matters beyond contractors
+
+Although I designed this particular system around contractors, the underlying idea applies much more broadly.
+
+A website can be more than a digital brochure.
+
+For a restaurant, it could connect customers to reservations and ordering.
+
+For a property company, it could connect enquiries to property management workflows.
+
+For a professional service firm, it could connect enquiries to consultations and client onboarding.
+
+For an e-commerce business, it could connect marketing, orders, customers, and fulfilment.
+
+The exact workflow changes from business to business.
+
+The principle doesn't:
+
+**Software should make the business's work easier, not simply give it another place to work.**
+
+## The reason I built it
+
+I built Contractor Growth System because I wanted a project that demonstrated more than my ability to create a polished interface.
+
+I wanted to demonstrate that I can look at a business process, identify where technology can improve it, design the user experience around that problem, model the underlying data, build the application, and connect the different pieces into a coherent system.
+
+The result is a concept project, but the thinking behind it is the same thinking I would bring to a real client project.
+
+**Understand the business.**
+**Understand the customer.**
+**Understand the workflow.**
+**Then build the software around it.**
