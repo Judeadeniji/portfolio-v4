@@ -64,7 +64,7 @@ const articleSchema = {
 const imageGlob = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}');
 ---
 
-<Layout title={`${title} | ${author.name}`} description={data.description} image={image} schema={articleSchema}>
+<Layout title={`${title} | ${author.name}`} description={data.description} image={image} schema={articleSchema} ogType="article">
   <div class="animate-enter">
     <div class="flex items-center justify-between mb-8">
       <a href="/#selected-work" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">

@@ -7,13 +7,15 @@ interface Props {
     description?: string;
     image?: string;
     schema?: Record<string, any>;
+    ogType?: string;
 }
 
 const { 
     title, 
     description = "I build and ship full-stack web products from architecture to production.",
     image = "/og.png",
-    schema
+    schema,
+    ogType = "website"
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
@@ -48,7 +50,7 @@ const finalSchema = schema || defaultSchema;
         <meta name="robots" content="index, follow" />
         
         <!-- Open Graph -->
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={ogType} />
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

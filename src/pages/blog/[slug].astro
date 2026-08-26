@@ -37,7 +37,7 @@ const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
 });
 ---
 
-<Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`}>
+<Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`} ogType="article">
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
