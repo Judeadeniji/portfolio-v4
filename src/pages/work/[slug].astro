@@ -34,10 +34,37 @@ if (workEntry) {
   headings = rendered.headings;
 }
 
-const title = `${data.company}  ${data.role}`;
+const title = `${data.company} — ${data.role}`;
+const image = data.images && data.images.length > 0 ? `/assets/${data.images[0]}` : undefined;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": data.description,
+  "author": {
+    "@type": "Person",
+    "name": author.name,
+    "url": Astro.site ? new URL(Astro.site).href : Astro.url.origin
+  },
+  "url": canonicalURL.href,
+  "image": image ? new URL(image, canonicalURL).href : new URL("/og.png", canonicalURL).href,
+  "publisher": {
+    "@type": "Organization",
+    "name": author.name,
+    "logo": {
+      "@type": "ImageObject",
+      "url": new URL(author.avatarUrl, canonicalURL).href
+    }
+  }
+};
+
+const imageGlob = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}');
 ---
 
-<Layout title={`${title} | ${author.name}`} description={data.description}>
+<Layout title={`${title} | ${author.name}`} description={data.description} image={image} schema={articleSchema}>
   <div class="animate-enter">
     <div class="flex items-center justify-between mb-8">
       <a href="/#selected-work" class="text-sm font-mono text-muted-foreground hover:text-foreground transition">
@@ -74,16 +101,22 @@ const title = `${data.company}  ${data.role}`;
     {data.images && data.images.length > 0 && (
       <section class="mb-14">
         <div class={`grid grid-cols-1 gap-4 ${data.images.length > 1 ? 'sm:grid-cols-2' : ''}`}>
-          {data.images.map((img: string) => (
-            <div class="rounded-lg overflow-hidden border border-border bg-muted">
-              <img
-                src={`/assets/${img}`}
-                alt={data.company}
-                class="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          ))}
+          {data.images.map((img: string) => {
+            const imagePath = `/src/assets/${img}`;
+            if (!imageGlob[imagePath]) {
+              console.error(`Image not found: ${imagePath}`);
+              return null;
+            }
+            return (
+              <div class="rounded-lg overflow-hidden border border-border bg-muted">
+                <Image
+                  src={imageGlob[imagePath]()}
+                  alt={`${data.company} project showcase`}
+                  class="w-full h-auto"
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
     )}
