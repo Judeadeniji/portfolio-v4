@@ -114,7 +114,7 @@ export const GET: APIRoute = async () => {
       React.createElement(
         'div',
         { style: { fontSize: '24px', color: colors.tertiary, fontFamily: 'Geist' } },
-        'oferanmi.netlify.app'
+        'oferanmi.vercel.app'
       )
     )
   );

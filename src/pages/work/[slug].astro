@@ -47,9 +47,21 @@ const title = `${data.company}  ${data.role}`;
     </div>
 
     <header class="mb-10">
-      <h1 class="text-3xl sm:text-4xl font-semibold text-foreground tracking-tight leading-snug mb-2">
-        {data.company}
-      </h1>
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
+        <h1 class="text-3xl sm:text-4xl font-semibold text-foreground tracking-tight leading-snug">
+          {data.company}
+        </h1>
+        {data.url && (
+          <a
+            href={data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-4 py-2 bg-foreground text-canvas text-sm font-mono font-medium transition hover:opacity-90 shrink-0"
+          >
+            Visit Live Site ↗
+          </a>
+        )}
+      </div>
       <p class="text-base text-muted-foreground mb-3">{data.description}</p>
       <div class="flex items-center gap-3 text-sm font-mono text-tertiary">
         <span>{data.role}</span>

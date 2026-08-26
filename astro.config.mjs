@@ -12,7 +12,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://oferanmi.netlify.app/',
+  site: 'https://oferanmi.vercel.app/',
   markdown: {
     processor: satteri({ 
       features: { smartPunctuation: true, headingAttributes: true },

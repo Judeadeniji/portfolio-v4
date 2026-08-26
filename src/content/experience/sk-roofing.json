@@ -7,5 +7,5 @@
   "description": "A conversion-focused website concept for a Saskatoon roofing company, designed to build trust, clearly communicate services, and turn local website visitors into qualified estimate requests.",
   "stack": ["SvelteKit", "Tailwind CSS", "TypeScript"],
   "images": ["sk-roofing.png"],
-  "url": "https://sk-roofing.netlify.app/"
+  "url": "https://sk-roofing-dusky.vercel.app/"
 }
