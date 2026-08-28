@@ -1,0 +1,244 @@
+---
+import { getCollection } from 'astro:content';
+
+const profileCollection = await getCollection('profile');
+const profile = profileCollection[0].data;
+
+// We filter out any experience we don't want (if any) or just take them all.
+// The hardcoded resume only showed GoLodge, Testgraders, Hospio360. 
+// We will sort them by order.
+const experiences = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+
+// For projects, we grab venndor, zEnv, and go-ytm. 
+// We'll just grab all projects from the collection and sort them by order, then maybe slice the top 3 or all of them.
+// The hardcoded resume only showed venndor, zEnv, and go-ytm. Let's filter to just those if others exist, or take all if that's what's wanted. 
+// Actually we can just take the top 3 or the specific ones. 
+// "venndor", "zEnv", "go-ytm".
+const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const projects = allProjects.filter(p => ["venndor", "zEnv", "go-ytm"].includes(p.data.name) || ["venndor", "zEnv", "go-ytm"].includes(p.data.name.toLowerCase()));
+
+// The Summary and Core Competencies can be kept as frontmatter constants or we can move them to profile.
+// The prompt says "use dynamic data", so we use the profile.
+// Since profile bio is different from resume summary, we'll keep the resume summary here for now, or just use the bio if it fits better. Wait, I will hardcode the summary in the frontmatter since we only have `bio` in profile which is different.
+const resumeSummary = "Product-focused Software Engineer bridging the gap between high-performance systems engineering and modern frontend architectures. Deeply experienced in the Go and TypeScript ecosystems. I specialize in building developer tools, secure infrastructure, and end-to-end full-stack products that prioritize both developer experience and end-user impact.";
+
+const coreCompetencies = [
+    { category: "Languages", tech: "Go, TypeScript, JavaScript, Python" },
+    { category: "Frontend", tech: "React, Next.js, Astro, TanStack Start, Tailwind CSS" },
+    { category: "Backend & Infrastructure", tech: "Hono, FastAPI, Cloudflare (Workers/D1/R2/KV/Durable Objects), Redis, PostgreSQL, Turso, SQLite, Docker, CI/CD" },
+    { category: "Specialized", tech: "AST Manipulation, Cryptography (AES-256-GCM, Argon2), Terminal UI (Bubble Tea)" }
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{profile.name} - Resume</title>
+    <style is:inline>
+        :root {
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --bg-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--bg-color);
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                font-size: 12px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            a {
+                text-decoration: none !important;
+                color: var(--text-primary) !important;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .contact-info {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .contact-info a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            margin: 0 4px;
+            transition: border-color 0.2s;
+        }
+
+        .contact-info a:hover {
+            border-color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 14px;
+            margin: 0;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        ul {
+            margin: 6px 0 16px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-meta {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .project-tech {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #111;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+        
+        .print-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Export as PDF</button>
+
+    <div class="header">
+        <h1>{profile.name}</h1>
+        <div class="contact-info">
+            {profile.contact.location} | 
+            <a href={`mailto:${profile.contact.email}`}>{profile.contact.email}</a> | 
+            {profile.contact.phone} | 
+            <a href={profile.contact.github}>GitHub</a> | 
+            <a href={profile.contact.linkedin}>LinkedIn</a> | 
+            <a href="https://oferanmi.netlify.app/">Portfolio</a>
+        </div>
+    </div>
+
+    <h2>Summary</h2>
+    <p style="color: var(--text-secondary);">{resumeSummary}</p>
+
+    <h2>Core Competencies</h2>
+    <ul>
+        {coreCompetencies.map(comp => (
+            <li><strong>{comp.category}:</strong> {comp.tech}</li>
+        ))}
+    </ul>
+
+    <h2>Experience</h2>
+
+    {experiences.map(exp => (
+        <div class="item">
+            <div class="item-header">
+                <div><h3>{exp.data.role}</h3> | <strong>{exp.data.company}</strong></div>
+                <div class="item-meta">{exp.data.period} | {exp.data.location}</div>
+            </div>
+            {exp.data.highlights && exp.data.highlights.length > 0 && (
+                <ul>
+                    {exp.data.highlights.map(highlight => (
+                        <li>{highlight}</li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    ))}
+
+    <h2>Technical Projects (Open Source)</h2>
+
+    {projects.map(proj => (
+        <div class="item">
+            <div class="item-header">
+                <div><h3>{proj.data.name}</h3> <span class="project-tech">| {proj.data.technologies.join(', ')}</span></div>
+                {proj.data.repo && <div class="item-meta"><a href={proj.data.repo}>GitHub</a></div>}
+            </div>
+            {proj.data.features && proj.data.features.length > 0 && (
+                <ul>
+                    {proj.data.features.map(feature => (
+                        <li>{feature}</li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    ))}
+
+    <h2>Education</h2>
+    <p style="color: var(--text-secondary); font-style: italic;">Self-Taught Engineer / Active Open-Source Contributor</p>
+
+</body>
+</html>

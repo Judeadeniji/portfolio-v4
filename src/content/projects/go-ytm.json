@@ -6,15 +6,13 @@
     "Python",
     "Bubble Tea",
     "FastAPI",
-    "SQLite",
-    "mpv"
+    "SQLite"
   ],
   "repo": "https://github.com/Judeadeniji/go-ytm",
   "features": [
-    "Offline caching and playback support",
-    "Native Kitty terminal image rendering for album art",
-    "Vim-like keybindings for ultra-fast navigation",
-    "Python sidecar for robust YouTube Music API extraction"
+    "Designed a feature-rich, terminal-based YouTube Music player utilizing a complex hybrid architecture.",
+    "Built an ultra-fast Go TUI (Terminal User Interface) with Vim-like keybindings, communicating with an isolated Python sidecar for robust YouTube API extraction.",
+    "Engineered offline caching systems and native Kitty terminal integrations to render high-resolution album art entirely within the terminal."
   ],
   "order": 1
 }

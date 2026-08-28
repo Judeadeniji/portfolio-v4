@@ -1,0 +1,15 @@
+{
+  "order": 3,
+  "period": "Feb 2025",
+  "role": "Fullstack Developer",
+  "company": "Hospio360",
+  "location": "Remote",
+  "description": "An all-in-one cloud-based hotel management platform streamlining front desk, reservations, billing, and housekeeping operations.",
+  "stack": ["Astro", "TypeScript", "Tailwind CSS", "Bootstrap"],
+  "images": ["hospio360.png"],
+  "url": "https://hospio360.netlify.app/",
+  "highlights": [
+    "Engineered an all-in-one hotel management platform streamlining front desk operations, reservations, billing, and housekeeping.",
+    "Built a unified, high-performance dashboard that integrates real-time insights and financial tracking across departments, significantly reducing manual administration errors."
+  ]
+}

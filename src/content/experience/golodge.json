@@ -7,5 +7,11 @@
   "description": "A booking platform built around multi-role reservations, partial payments, and host/guest workflows.",
   "stack": ["TypeScript", "Hono", "Turso", "Drizzle ORM", "Cloudinary", "Cloudflare", "Better Auth", "PostHog", "Sanity"],
   "images": [],
-  "url": ""
+  "url": "",
+  "highlights": [
+    "Architected and implemented a robust booking system handling partial payments and complex multi-role authorization logic (Host, User, Admin).",
+    "Designed and engineered a fully serverless, highly-available backend on Cloudflare using Hono, Turso, and Drizzle ORM.",
+    "Implemented robust security policies, including strict cookie handling, edge-level DDoS protection via Cloudflare, and privacy-safe external API integrations.",
+    "Integrated enterprise tooling including Better-Auth for identity, PostHog for product analytics, and Sanity CMS for blog content delivery."
+  ]
 }

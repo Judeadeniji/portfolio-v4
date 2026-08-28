@@ -1,8 +1,8 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
-const profileEntry = await getEntry('profile', 'main');
-const profileData = profileEntry!.data;
+const profileCollection = await getCollection('profile');
+const profileData = profileCollection[0].data;
 const name = profileData.name;
 const email = profileData.contact.email;
 const twitterHandle = profileData.twitterHandle;

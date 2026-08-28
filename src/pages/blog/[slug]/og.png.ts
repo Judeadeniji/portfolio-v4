@@ -19,8 +19,8 @@ export const GET: APIRoute<{
   const { post } = props;
 
   // Fetch author data dynamically
-  const profileEntry = await getEntry('profile', 'main');
-  const author = profileEntry!.data;
+  const profileCollection = await getCollection('profile');
+  const author = profileCollection[0].data;
 
   // Convert local avatar to base64 to prevent takumi-js fetch failures during build
   let avatarSrc = author.avatarUrl;

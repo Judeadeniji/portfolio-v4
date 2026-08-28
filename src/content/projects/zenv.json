@@ -11,10 +11,9 @@
   ],
   "repo": "https://github.com/Judeadeniji/zenv-sh",
   "features": [
-    "End-to-End Encryption with AES-256-GCM and Argon2",
-    "CLI tool for seamless CI/CD secret injection",
-    "Self-hostable backend written in Go",
-    "Secure Team Sharing and Role-Based Access Control"
+    "Engineered an end-to-end zero-knowledge secret management platform utilizing AES-256-GCM and Argon2 encryption.",
+    "Built a high-throughput, self-hostable Go backend to manage encrypted secrets and team-based RBAC.",
+    "Developed a native CLI tool for zero-friction CI/CD secret injection, paired with a modern TanStack Start dashboard featuring a custom client-side crypto engine."
   ],
   "order": 0
 }

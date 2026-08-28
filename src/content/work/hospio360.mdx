@@ -1,0 +1,60 @@
+---
+title: Hospio360
+description: An all-in-one hotel management platform streamlining front desk, reservations, billing, housekeeping, and inventory from a single dashboard.
+---
+
+## Overview
+
+Hospio360 was built to solve a critical problem in the hospitality industry: disconnected tools leading to messy operations. When a hotel's front desk, restaurant, laundry, and inventory don't talk to each other, staff get stuck fixing mistakes and doing double the work using scattered spreadsheets and paper logs.
+
+The goal was to engineer a unified, cloud-based hotel management platform that provides everything a hotel needs in one streamlined dashboard.
+
+## What needed to work
+
+- Centralized dashboard for front desk and reservation management
+- Unified billing and financial tracking
+- Housekeeping, restaurant, and inventory workflows
+- Real-time visibility and reporting across all departments
+- A responsive, intuitive interface tailored for hospitality staff rather than tech experts
+
+## Architecture
+
+```
+Astro & Frontend Framework (Dashboard)
+       ↓
+  Backend API & Microservices
+       ↓
+  Database & Third-Party Integrations
+```
+
+The system required a robust architecture capable of syncing data across multiple modules in real-time. We needed to ensure that a reservation update at the front desk immediately reflected in the housekeeping schedule and the financial reports without any data inconsistencies or race conditions.
+
+## Engineering challenges
+
+### Unifying Disconnected Systems
+
+Traditional hotel operations are fragmented. Building a unified system meant designing a data model that could seamlessly interlink reservations with housekeeping tasks and restaurant billing. Every action in one module needed to reliably trigger the correct state changes across the entire platform to prevent revenue leaks and manual errors.
+
+### Real-Time Synchronization
+
+For a hotel, real-time data is critical. If a room is marked "clean" by housekeeping, the front desk must know instantly so they can check in waiting guests. Handling real-time state updates across multiple clients required careful implementation of WebSocket subscriptions and optimistic UI updates to keep the dashboard snappy and responsive.
+
+### User Experience for Staff
+
+The platform had to be intuitive enough that hotel staff could get up and running within a day. This meant focusing heavily on accessibility, clear workflows, and a streamlined UI that minimizes clicks for frequent actions like checking in guests or viewing daily reports.
+
+## What I shipped
+
+- A comprehensive, unified dashboard for hotel operations
+- Real-time synchronization across reservations, housekeeping, and billing
+- Automated financial tracking and reporting systems
+- A responsive design that works seamlessly across devices for on-the-go management
+- End-to-end deployment and continuous integration pipelines
+
+## Outcome
+
+Hospio360 successfully replaced scattered spreadsheets and disconnected tools with a single source of truth. The platform drastically reduces administrative overhead, minimizes manual errors, and allows hotel staff to focus on delivering great guest experiences rather than managing software.
+
+## My role
+
+Fullstack Developer — responsible for architecting core system modules, building out the dashboard interface, API integrations, and ensuring seamless data synchronization across the platform.

@@ -9,10 +9,9 @@
   ],
   "repo": "https://github.com/judeadeniji/venndor",
   "features": [
-    "Intelligent Package Manager Detection (npm, yarn, pnpm, bun)",
-    "Zero Configuration non-destructive integration with package.json workspaces",
-    "Diff & Patch Generation for seamless local hacks and emergency fixes",
-    "Smart Upgrades that intelligently fetch new versions and attempt to re-apply local modifications"
+    "Built a high-performance CLI tool to securely vendor npm packages directly into a repository as owned source code.",
+    "Engineered intelligent package manager detection and non-destructive AST manipulations to seamlessly integrate with native workspace configurations.",
+    "Implemented robust offline Diff & Patch generation enabling developers to commit local hacks/fixes that automatically re-apply over upstream version bumps."
   ],
   "order": 5
 }

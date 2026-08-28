@@ -1,35 +1,39 @@
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { render } from 'takumi-js';
 import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async () => {
-  // Fetch author data dynamically
-  const profileEntry = await getEntry('profile', 'main');
-  const author = profileEntry!.data;
+export const GET: APIRoute = async ({ url }) => {
+  // Fetch profile data dynamically
+  const profileCollection = await getCollection('profile');
+  const author = profileCollection[0].data;
 
-  // Convert local avatar to base64 to prevent takumi-js fetch failures during build
+  // Convert local avatar to base64 to prevent takumi-js fetch failures
   let avatarSrc = author.avatarUrl;
+
   if (avatarSrc.startsWith('/')) {
     const avatarPath = path.join(process.cwd(), 'public', avatarSrc);
+
     if (fs.existsSync(avatarPath)) {
       const avatarBuffer = fs.readFileSync(avatarPath);
       avatarSrc = `data:image/png;base64,${avatarBuffer.toString('base64')}`;
     }
   }
 
-  // Use Inter font (matching redesign)
-  const fontBuffer = await fetch("https://takumi.kane.tw/fonts/Geist.woff2").then(r => r.arrayBuffer());
+  // Geist keeps the card clean and editorial
+  const fontBuffer = await fetch(
+    'https://takumi.kane.tw/fonts/Geist.woff2'
+  ).then((r) => r.arrayBuffer());
 
-  // New dark theme palette from redesign.html
   const colors = {
     canvas: '#0A0A0A',
     border: '#242424',
     foreground: '#EDEDED',
     muted: '#888888',
     tertiary: '#555555',
+    accent: '#A3A3A3',
   };
 
   const element = React.createElement(
@@ -42,11 +46,12 @@ export const GET: APIRoute = async () => {
         flexDirection: 'column',
         backgroundColor: colors.canvas,
         color: colors.foreground,
-        padding: '80px',
+        padding: '72px',
         fontFamily: 'Geist',
-      }
+      },
     },
-    // Top Section (Name & Role)
+
+    // Header
     React.createElement(
       'div',
       {
@@ -54,67 +59,140 @@ export const GET: APIRoute = async () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: 'auto',
-          fontSize: '28px',
-          fontFamily: 'Geist',
-        }
+          fontSize: '26px',
+        },
       },
-      React.createElement('span', { style: { fontWeight: 500 } }, author.name),
-      React.createElement('span', { style: { color: colors.tertiary } }, 'Product Engineer')
+      React.createElement(
+        'span',
+        {
+          style: {
+            fontWeight: 500,
+          },
+        },
+        author.name
+      ),
+
+      React.createElement(
+        'span',
+        {
+          style: {
+            color: colors.tertiary,
+          },
+        },
+        'Web Designer & Developer'
+      )
     ),
 
-    // Middle Section (Value Proposition)
+    // Main positioning
     React.createElement(
       'div',
       {
         style: {
-          fontSize: '64px',
-          fontWeight: 500,
-          lineHeight: '1.2',
-          letterSpacing: '-0.02em',
-          maxWidth: '900px',
-          marginTop: '60px',
-          marginBottom: '80px',
-          display: 'flex',
-          flexWrap: 'wrap',
-        }
-      },
-      'I build and ship full-stack web products from architecture to production.'
-    ),
-
-    // Bottom Section (Author Profile & Links)
-    React.createElement(
-      'div',
-      {
-        style: {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           marginTop: 'auto',
-          paddingTop: '40px',
-          borderTop: `1px solid ${colors.border}`
-        }
+          marginBottom: 'auto',
+          maxWidth: '940px',
+          fontSize: '58px',
+          fontWeight: 500,
+          lineHeight: '1.12',
+          letterSpacing: '-0.035em',
+        },
       },
-      // Author info
+      'I build websites that turn visitors into customers.'
+    ),
+
+    // Supporting positioning
+    React.createElement(
+      'div',
+      {
+        style: {
+          fontSize: '24px',
+          color: colors.muted,
+          maxWidth: '700px',
+          lineHeight: '1.4',
+          marginBottom: '56px',
+        },
+      },
+      'Strategy, design and development for businesses that want to look as good online as they do offline.'
+    ),
+
+    // Footer
+    React.createElement(
+      'div',
+      {
+        style: {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: '32px',
+          borderTop: `1px solid ${colors.border}`,
+        },
+      },
+
+      // Author
       React.createElement(
         'div',
-        { style: { display: 'flex', alignItems: 'center', gap: '24px' } },
+        {
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: '18px',
+          },
+        },
+
         React.createElement('img', {
           src: avatarSrc,
-          style: { width: '72px', height: '72px', borderRadius: '12px', border: `1px solid ${colors.border}` }
+          style: {
+            width: '58px',
+            height: '58px',
+            borderRadius: '10px',
+            border: `1px solid ${colors.border}`,
+          },
         }),
+
         React.createElement(
           'div',
-          { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
-          React.createElement('span', { style: { fontSize: '26px', fontWeight: 500 } }, author.name),
-          React.createElement('span', { style: { fontSize: '20px', color: colors.muted } }, author.contact.location)
+          {
+            style: {
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+            },
+          },
+
+          React.createElement(
+            'span',
+            {
+              style: {
+                fontSize: '22px',
+                fontWeight: 500,
+              },
+            },
+            author.name
+          ),
+
+          React.createElement(
+            'span',
+            {
+              style: {
+                fontSize: '18px',
+                color: colors.muted,
+              },
+            },
+            'Web Design · Development · Digital Strategy'
+          )
         )
       ),
-      // GitHub URL
+
+      // Domain
       React.createElement(
-        'div',
-        { style: { fontSize: '24px', color: colors.tertiary, fontFamily: 'Geist' } },
-        'oferanmi.vercel.app'
+        'span',
+        {
+          style: {
+            fontSize: '22px',
+            color: colors.tertiary,
+          },
+        },
+        url.hostname
       )
     )
   );
@@ -122,13 +200,13 @@ export const GET: APIRoute = async () => {
   const output = await render(element, {
     width: 1200,
     height: 630,
-    format: "png",
+    format: 'png',
     fonts: [
       {
-        name: "Geist",
-        data: () => fontBuffer
-      }
-    ]
+        name: 'Geist',
+        data: () => fontBuffer,
+      },
+    ],
   });
 
   return new Response(output as BodyInit, {
@@ -137,4 +215,4 @@ export const GET: APIRoute = async () => {
       'Cache-Control': 'public, max-age=31536000, immutable',
     },
   });
-}
+};

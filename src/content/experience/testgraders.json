@@ -1,11 +1,17 @@
 {
   "order": 2,
-  "period": "Mar 2025",
+  "period": "March 2025",
   "role": "Fullstack Developer",
   "company": "Testgraders",
   "location": "Freelance",
-  "description": "A global IELTS practice test grading platform enabling expert feedback on essays and speaking modules.",
-  "stack": ["TypeScript", "Next.js", "Hono", "Cloudflare D1", "R2", "KV", "Durable Objects", "TanStack Table", "Tailwind CSS", "shadcn/ui"],
+  "description": "A global IELTS practice grading platform with automated grader distribution and bi-directional review systems.",
+  "stack": ["Next.js", "Hono", "Cloudflare D1", "R2", "TanStack Table"],
   "images": [],
-  "url": ""
+  "url": "",
+  "highlights": [
+    "Led end-to-end architecture and deployment of a global IELTS practice grading platform utilizing Next.js and Hono.",
+    "Built a highly scalable backend architecture utilizing Cloudflare's complete serverless stack (D1, R2, KV, Durable Objects) to handle complex audio/video media uploads and global traffic routing.",
+    "Engineered a proprietary, fair-distribution algorithm to balance grader workloads and designed a bi-directional review system for quality control.",
+    "Delivered a high-performance frontend using TanStack Table to handle large grading datasets and custom Shadcn/UI for a seamless user experience."
+  ]
 }
