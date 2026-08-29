@@ -27,29 +27,49 @@ const { Content, headings } = await render(post);
 const words = post.body ? post.body.trim().split(/\s+/).length : 0;
 const readingTime = Math.max(1, Math.ceil(words / 200));
 
-const profileEntry = await getEntry('profile', 'main');
-const author = profileEntry!.data;
+const profileCollection = await getCollection('profile');
+const author = profileCollection[0].data;
 
 const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
+const siteOrigin = Astro.site ? new URL(Astro.site).href : Astro.url.origin;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteOrigin}#person`,
+      "name": author.name,
+      "jobTitle": "Product Engineer",
+      "url": siteOrigin,
+      "image": new URL(author.avatarUrl, canonicalURL).href,
+      "sameAs": [
+        "https://github.com/Judeadeniji",
+        "https://www.linkedin.com/in/feranmi-adeniji",
+        "https://x.com/iam_feranmi_"
+      ]
+    },
+    {
+      "@type": "TechArticle",
+      "headline": post.data.title,
+      "description": post.data.description,
+      "datePublished": new Date(post.data.date).toISOString(),
+      "author": { "@id": `${siteOrigin}#person` },
+      "url": canonicalURL.href,
+      "image": new URL(`/blog/${post.id}/og.png`, canonicalURL).href,
+      "publisher": { "@id": `${siteOrigin}#person` }
+    }
+  ]
+};
 ---
 
-<Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`} ogType="article">
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.data.title,
-    "description": post.data.description,
-    "datePublished": new Date(post.data.date).toISOString(),
-    "author": {
-      "@type": "Person",
-      "name": author.name,
-      "url": Astro.url.origin
-    }
-  })} />
+<Layout title={`${post.data.title} | ${author.name}`} description={post.data.description} image={`/blog/${post.id}/og.png`} schema={articleSchema} ogType="article">
 
   <div class="animate-enter">
     <div class="flex items-center justify-between mb-8">

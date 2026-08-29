@@ -22,8 +22,8 @@ export async function getStaticPaths() {
 const { exp, workEntry } = Astro.props;
 const data = exp.data;
 
-const profileEntry = await getEntry("profile", "main");
-const author = profileEntry!.data;
+const profileCollection = await getCollection("profile");
+const author = profileCollection[0].data;
 
 // Render MDX content if available
 let Content: RenderResult | null = null;
@@ -38,27 +38,34 @@ const title = `${data.company} — ${data.role}`;
 const image = data.images && data.images.length > 0 ? `/assets/${data.images[0]}` : undefined;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url);
+const siteOrigin = Astro.site ? new URL(Astro.site).href : Astro.url.origin;
 
 const articleSchema = {
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": title,
-  "description": data.description,
-  "author": {
-    "@type": "Person",
-    "name": author.name,
-    "url": Astro.site ? new URL(Astro.site).href : Astro.url.origin
-  },
-  "url": canonicalURL.href,
-  "image": image ? new URL(image, canonicalURL).href : new URL("/og.png", canonicalURL).href,
-  "publisher": {
-    "@type": "Organization",
-    "name": author.name,
-    "logo": {
-      "@type": "ImageObject",
-      "url": new URL(author.avatarUrl, canonicalURL).href
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteOrigin}#person`,
+      "name": author.name,
+      "jobTitle": "Product Engineer",
+      "url": siteOrigin,
+      "image": new URL(author.avatarUrl, canonicalURL).href,
+      "sameAs": [
+        "https://github.com/Judeadeniji",
+        "https://www.linkedin.com/in/feranmi-adeniji",
+        "https://x.com/iam_feranmi_"
+      ]
+    },
+    {
+      "@type": "TechArticle",
+      "headline": title,
+      "description": data.description,
+      "author": { "@id": `${siteOrigin}#person` },
+      "url": canonicalURL.href,
+      "image": image ? new URL(image, canonicalURL).href : new URL("/og.png", canonicalURL).href,
+      "publisher": { "@id": `${siteOrigin}#person` }
     }
-  }
+  ]
 };
 
 const imageGlob = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}');
