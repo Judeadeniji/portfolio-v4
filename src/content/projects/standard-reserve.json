@@ -1,0 +1,19 @@
+{
+  "name": "Standard Reserve",
+  "description": "A sovereign onchain central bank protocol that tracks one number, defends its own currency, and answers to no one. Features complex scroll-driven animations and a highly polished UI.",
+  "technologies": [
+    "React",
+    "TypeScript",
+    "Vite",
+    "GSAP",
+    "CSS"
+  ],
+  "live_url": "https://stndrd-rsrv.vercel.app/",
+  "repo": "https://github.com/Judeadeniji/srsv",
+  "features": [
+    "Implemented high-performance, scroll-driven animations using GSAP and ScrollTrigger for a cinematic experience.",
+    "Built a modular, component-based React architecture for maintainability and scalability.",
+    "Designed and engineered complex UI interactions including a custom magnetic cursor and scroll-linked timeline scrubbing."
+  ],
+  "order": -2
+}
