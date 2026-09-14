@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('projects');
 const projects = allProjects
-  .filter(p => p.data.repo)
+  .filter(p => p.data.repo || p.data.live_url)
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -15,15 +15,23 @@ const projects = allProjects
 
   <div class="space-y-5">
     {projects.map((project) => (
-      <a href={project.data.repo} target="_blank" rel="noopener noreferrer" class="block">
+      <div class="block">
         <div class="flex items-baseline justify-between gap-4 mb-1">
           <h3 class="text-sm font-medium text-foreground">{project.data.name}</h3>
           <span class="text-xs font-mono text-tertiary">{project.data.technologies.slice(0, 2).join(' / ')}</span>
         </div>
-        <p class="text-sm text-muted-foreground">
+        <p class="text-sm text-muted-foreground mb-2.5">
           {project.data.description}
         </p>
-      </a>
+        <div class="flex items-center gap-4">
+          {project.data.repo && (
+            <a href={project.data.repo} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-tertiary hover:text-foreground transition-colors">GitHub ↗</a>
+          )}
+          {project.data.live_url && (
+            <a href={project.data.live_url} target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-tertiary hover:text-foreground transition-colors">Live Site ↗</a>
+          )}
+        </div>
+      </div>
     ))}
   </div>
 </section>
